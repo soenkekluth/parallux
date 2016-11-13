@@ -5,12 +5,54 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>Parralux Demo</title>
+  <title>Parallux Demo</title>
   <style>
-  .page {
-    max-width: 800px;
-    margin: 0 auto;
+
+  body,
+  html {
+    /*font-size: 24px;*/
+    margin : 0;
+    height: 100%;
+    min-height: 100%;
+
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+
+    text-size-adjust: 100%;
   }
+
+  html {
+    overflow-y: scroll;
+  }
+
+  .page {
+    position: relative;
+    height: 100%;
+  }
+
+  .header {
+    height: 100%;
+    background-color: #222;
+    text-rendering: optimizeSpeed;
+    color: white;
+    /*padding-top: 30%;*/
+    font-family: sans-serif;
+
+  }
+
+  .header .block {
+    padding-top: 15%;
+    line-height: 2;
+    font-size: 120%;
+  }
+
+  .header .block h1 {
+    text-transform: uppercase;
+    /*font-weight: normal;*/
+    /*font-size: 300%;*/
+  }
+
   .parallux-container {
     position: relative;
     margin-bottom: 2em;
@@ -20,98 +62,131 @@
   .parallux-item {
     backface-visibility: hidden;
     perspective: preserve-3d;
+    /*transition: transform 100ms ease-out;*/
   }
 
-
-  .overflow-hidden{
+  .overflow-hidden {
     height: 600px;
     overflow: hidden;
+  }
+
+  .clearfix::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  .block{
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .block::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  .left {
+    float: left;
+    width: 45%;
+
+  }
+
+  .right {
+    float: right;
+    width: 45%;
   }
   </style>
 </head>
 
 <body>
   <div class="page">
-    <div class="parallux-container">
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum quae dignissimos pariatur praesentium quidem accusantium! Deserunt pariatur, similique, nobis minima earum nihil enim blanditiis delectus ut. Commodi eveniet, nobis illo.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure tempore, saepe autem maxime ipsa a aut, quos voluptatum eveniet molestiae, neque et odio quo! Consequatur, iure! Voluptate ex, esse tempora.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum voluptatibus quasi cum quas repudiandae quaerat magnam officia, excepturi nostrum ad, eveniet assumenda natus. Ipsa, ratione iusto atque pariatur, doloremque vitae!</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit mollitia quas delectus, accusantium alias nulla inventore, quaerat ea iusto rerum eveniet voluptatem in sint ipsum nostrum nihil iste dolor ipsam.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam provident, cumque nemo. Iure dolorum excepturi odio, cumque architecto accusamus? Numquam dicta reiciendis vero praesentium voluptate, corporis quaerat libero repellendus explicabo.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis facere nisi voluptate consequatur, porro praesentium, sunt dicta sequi itaque expedita nam commodi eveniet temporibus amet excepturi fuga exercitationem. Dignissimos, beatae.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique iste quia doloribus id mollitia ipsum eum provident, quibusdam corporis expedita. Provident dolore neque, maxime iusto illum saepe! Laboriosam, consequatur, vel.</div>
-      <div class="parallux-item" data-parallux-ratio="-0.05">
-        <img src="http://lorempixel.com/800/320/" alt="">
+    <header class="header parallux-container">
+      <div class="block">
+        <div class="parallux-item" data-parallux-ratio="-0.5">
+          <h1>Parallux</h1>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam quis vero commodi voluptates assumenda minima nesciunt pariatur deserunt harum expedita, optio cupiditate temporibus sit itaque, at illo quibusdam repellendus labore.</p>
+        </div>
       </div>
-      <div class="parallux-item" data-parallux-ratio="0.1">
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo distinctio ratione, laborum nesciunt eveniet ullam, id fugiat, quaerat ipsum repudiandae sit quae dicta quo necessitatibus velit temporibus facere impedit non.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita sunt nulla voluptate quis maxime. Aut laborum culpa voluptatibus in praesentium officia, at qui. Odit veritatis debitis qui blanditiis eum commodi!</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum recusandae fuga suscipit iusto placeat totam commodi quisquam eius, quibusdam ut itaque amet quae blanditiis vel excepturi eveniet quia dignissimos iure?</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam eligendi nesciunt debitis. Ad, animi, aliquid. Illo expedita nam inventore tempore cum, animi saepe cupiditate fugit, corrupti possimus adipisci pariatur magni!</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati cumque ut quis debitis rerum, magnam corporis, ea adipisci reprehenderit totam itaque natus! Eius amet quam molestiae ipsum, ea necessitatibus, nulla.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate alias similique veniam, quisquam officiis doloribus consequuntur assumenda aut aspernatur reprehenderit, placeat modi quasi quis, dolores repellendus libero. Delectus voluptatibus, omnis.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa autem dolores aspernatur, distinctio similique quam minus, incidunt ex harum veniam dolore magni inventore voluptate officiis, fugiat natus, atque magnam perferendis.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta expedita, in vero accusamus ea et dignissimos distinctio repellendus perferendis id blanditiis voluptatem sequi numquam repellat omnis aliquid, esse molestias doloribus.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam repellendus nostrum est, provident culpa repellat doloribus iure temporibus, quod sapiente, distinctio beatae quo. Incidunt qui saepe quidem, non, accusamus odit!</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis consectetur provident, saepe minima necessitatibus, placeat ea veritatis id et esse inventore accusamus omnis quibusdam laudantium ipsam iste. Itaque, suscipit, officiis.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur saepe corporis numquam placeat eius, rerum culpa. Voluptate accusantium animi sunt similique nesciunt, voluptates ratione architecto rerum reiciendis, vel tempora repellat.</div>
+    </header>
+
+    <section class="parallux-container">
+      <div class="block">
+        <div class="left">
+          <div class="parallux-item" data-parallux-ratio="0.1">
+            <img src="http://lorempixel.com/480/320/" alt="">
+            </div>
+            <div class="parallux-item" data-parallux-ratio="0.2">
+            <img src="http://lorempixel.com/320/400/" alt="">
+          </div>
+        </div>
+        <div class="right">
+          <article class="parallux-item" data-parallux-ratio="0.3">
+            <h1>Lorem Ipsum</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum quae dignissimos pariatur praesentium quidem accusantium! Deserunt pariatur, similique, nobis minima earum nihil enim blanditiis delectus ut. Commodi eveniet, nobis illo</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum quae dignissimos pariatur praesentium quidem accusantium! Deserunt pariatur, similique, nobis minima earum nihil enim blanditiis delectus ut. Commodi eveniet, nobis illo</p>
+          </article>
+        </div>
       </div>
-    </div>
-    <div class="parallux-container">
+
+    </section>
+    <section class="parallux-container">
       <div class="parallux-item" data-parallux-ratio="0.1">
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis minus iusto magnam, eum? Magnam nihil cum illo, beatae quisquam sequi quos atque ea, minus dignissimos fugiat, nesciunt pariatur mollitia provident.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat voluptatem est aliquam, ipsa eum saepe at nemo nobis harum provident, amet vero consequuntur architecto eius accusantium porro dicta recusandae quidem!</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit fuga neque minus. Blanditiis vitae, maiores totam itaque odit sint nesciunt facere delectus excepturi amet nam magnam tempora labore, ducimus assumenda.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores similique officia veritatis assumenda quos earum atque, numquam optio harum nostrum officiis sapiente molestiae reprehenderit. Exercitationem cupiditate quaerat, earum doloremque natus.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores similique officia veritatis assumenda quos earum atque, numquam optio harum nostrum officiis sapiente molestiae reprehenderit. Exercitationem cupiditate quaerat, earum doloremque natus.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores similique officia veritatis assumenda quos earum atque, numquam optio harum nostrum officiis sapiente molestiae reprehenderit. Exercitationem cupiditate quaerat, earum doloremque natus.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis minus iusto magnam, eum? Magnam nihil cum illo, beatae quisquam sequi quos atque ea, minus dignissimos fugiat, nesciunt pariatur mollitia provident.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat voluptatem est aliquam, ipsa eum saepe at nemo nobis harum provident, amet vero consequuntur architecto eius accusantium porro dicta recusandae quidem!</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit fuga neque minus. Blanditiis vitae, maiores totam itaque odit sint nesciunt facere delectus excepturi amet nam magnam tempora labore, ducimus assumenda.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores similique officia veritatis assumenda quos earum atque, numquam optio harum nostrum officiis sapiente molestiae reprehenderit. Exercitationem cupiditate quaerat, earum doloremque natus.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores similique officia veritatis assumenda quos earum atque, numquam optio harum nostrum officiis sapiente molestiae reprehenderit. Exercitationem cupiditate quaerat, earum doloremque natus.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores similique officia veritatis assumenda quos earum atque, numquam optio harum nostrum officiis sapiente molestiae reprehenderit. Exercitationem cupiditate quaerat, earum doloremque natus.</div>
       </div>
       <div class="parallux-item" data-parallux-ratio="-0.1">
         <img src="http://lorempixel.com/800/460/" alt="">
       </div>
       <div class="parallux-item" data-parallux-ratio="0.1">
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat ea ad vero exercitationem, sit maiores ipsa nam doloribus quae similique alias voluptas itaque quidem, culpa debitis modi eius, rerum. Hic!</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat, quas. Eius laudantium voluptatum nihil repellendus reprehenderit tempora eos, cumque porro similique assumenda quisquam sint vel, quod hic sapiente placeat!</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem unde odit sint commodi architecto veniam, necessitatibus optio et excepturi nam. Ut ipsam, voluptas autem ducimus illo repudiandae facere. Cum, consequatur.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem unde odit sint commodi architecto veniam, necessitatibus optio et excepturi nam. Ut ipsam, voluptas autem ducimus illo repudiandae facere. Cum, consequatur.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem unde odit sint commodi architecto veniam, necessitatibus optio et excepturi nam. Ut ipsam, voluptas autem ducimus illo repudiandae facere. Cum, consequatur.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem unde odit sint commodi architecto veniam, necessitatibus optio et excepturi nam. Ut ipsam, voluptas autem ducimus illo repudiandae facere. Cum, consequatur.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem unde odit sint commodi architecto veniam, necessitatibus optio et excepturi nam. Ut ipsam, voluptas autem ducimus illo repudiandae facere. Cum, consequatur.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem unde odit sint commodi architecto veniam, necessitatibus optio et excepturi nam. Ut ipsam, voluptas autem ducimus illo repudiandae facere. Cum, consequatur.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt, quis laborum, esse quo consequuntur iste! Laudantium vitae repellat illum dolorum iusto est, qui natus minima, doloribus voluptates aliquid obcaecati voluptas.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat ea ad vero exercitationem, sit maiores ipsa nam doloribus quae similique alias voluptas itaque quidem, culpa debitis modi eius, rerum. Hic!</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, fugiat, quas. Eius laudantium voluptatum nihil repellendus reprehenderit tempora eos, cumque porro similique assumenda quisquam sint vel, quod hic sapiente placeat!</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem unde odit sint commodi architecto veniam, necessitatibus optio et excepturi nam. Ut ipsam, voluptas autem ducimus illo repudiandae facere. Cum, consequatur.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem unde odit sint commodi architecto veniam, necessitatibus optio et excepturi nam. Ut ipsam, voluptas autem ducimus illo repudiandae facere. Cum, consequatur.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem unde odit sint commodi architecto veniam, necessitatibus optio et excepturi nam. Ut ipsam, voluptas autem ducimus illo repudiandae facere. Cum, consequatur.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem unde odit sint commodi architecto veniam, necessitatibus optio et excepturi nam. Ut ipsam, voluptas autem ducimus illo repudiandae facere. Cum, consequatur.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem unde odit sint commodi architecto veniam, necessitatibus optio et excepturi nam. Ut ipsam, voluptas autem ducimus illo repudiandae facere. Cum, consequatur.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem unde odit sint commodi architecto veniam, necessitatibus optio et excepturi nam. Ut ipsam, voluptas autem ducimus illo repudiandae facere. Cum, consequatur.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt, quis laborum, esse quo consequuntur iste! Laudantium vitae repellat illum dolorum iusto est, qui natus minima, doloribus voluptates aliquid obcaecati voluptas.</div>
       </div>
-    </div>
-    <div class="parallux-container">
-    <div class="parallux-item" data-parallux-ratio="0.02">
-      <div class="lazyview ltest">huuuuuaaa</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores, impedit eveniet, repellendus eligendi animi consequatur esse fuga tempora unde laboriosam laudantium officiis aliquam dolorum mollitia perferendis adipisci fugit non facilis.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quia, perferendis quaerat quis enim eius, temporibus laboriosam molestiae consequuntur labore quibusdam deleniti maxime sed tempora veritatis voluptatum, explicabo! Dignissimos, atque!</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus tempora, optio ad incidunt a quam vitae nulla consectetur, non tenetur doloremque excepturi iste laboriosam sint est obcaecati harum porro eaque.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo odio facere at facilis ipsam adipisci quos iste! Voluptates voluptatibus vero quae exercitationem ea, dicta nemo. Omnis voluptas molestiae temporibus nemo.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus consequuntur nam ex delectus reprehenderit voluptas quos magni. Cumque quaerat ea quod temporibus, quia quae? Architecto temporibus beatae, est deserunt minus!</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi omnis magnam, iusto cum accusamus explicabo soluta, ea minima minus tenetur, necessitatibus atque repudiandae voluptatem totam dolor odit deserunt rerum maiores!</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat porro beatae rerum? Non, distinctio aliquam eligendi perferendis esse, earum atque, ipsum, perspiciatis cum dignissimos autem. Ad atque nostrum, tempora?</div>
-      <div class="lazyview hugh"> </div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error provident aspernatur repellendus consequatur expedita corrupti quae delectus, consectetur! Cumque fugiat a hic pariatur fugit voluptatem inventore quis commodi explicabo provident?</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure delectus repudiandae reprehenderit, corporis qui itaque corrupti dolor saepe quod ut quia cumque facere eveniet in cupiditate, autem, doloremque iste deserunt.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae hic ea, eum quam, suscipit recusandae quod nemo, cupiditate sed dolore odio dolor quos nulla itaque. Tempora laboriosam ducimus mollitia, quam.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, voluptatum. Nobis labore nesciunt architecto, nostrum minima non maiores sint, pariatur vero accusamus nam libero soluta, cum veniam asperiores. In, placeat.</div>
-      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi nesciunt molestias dignissimos sapiente porro consequatur deserunt, nostrum quis temporibus, repellat dolorum accusamus animi, minus minima quibusdam illo velit, ratione consequuntur!</div>
+    </section>
+    <section class="parallux-container">
+      <div class="parallux-item" data-parallux-ratio="0.02">
+        <div class="lazyview ltest">huuuuuaaa</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores, impedit eveniet, repellendus eligendi animi consequatur esse fuga tempora unde laboriosam laudantium officiis aliquam dolorum mollitia perferendis adipisci fugit non facilis.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quia, perferendis quaerat quis enim eius, temporibus laboriosam molestiae consequuntur labore quibusdam deleniti maxime sed tempora veritatis voluptatum, explicabo! Dignissimos, atque!</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus tempora, optio ad incidunt a quam vitae nulla consectetur, non tenetur doloremque excepturi iste laboriosam sint est obcaecati harum porro eaque.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo odio facere at facilis ipsam adipisci quos iste! Voluptates voluptatibus vero quae exercitationem ea, dicta nemo. Omnis voluptas molestiae temporibus nemo.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus consequuntur nam ex delectus reprehenderit voluptas quos magni. Cumque quaerat ea quod temporibus, quia quae? Architecto temporibus beatae, est deserunt minus!</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi omnis magnam, iusto cum accusamus explicabo soluta, ea minima minus tenetur, necessitatibus atque repudiandae voluptatem totam dolor odit deserunt rerum maiores!</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat porro beatae rerum? Non, distinctio aliquam eligendi perferendis esse, earum atque, ipsum, perspiciatis cum dignissimos autem. Ad atque nostrum, tempora?</div>
+        <div class="lazyview hugh"> </div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error provident aspernatur repellendus consequatur expedita corrupti quae delectus, consectetur! Cumque fugiat a hic pariatur fugit voluptatem inventore quis commodi explicabo provident?</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure delectus repudiandae reprehenderit, corporis qui itaque corrupti dolor saepe quod ut quia cumque facere eveniet in cupiditate, autem, doloremque iste deserunt.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae hic ea, eum quam, suscipit recusandae quod nemo, cupiditate sed dolore odio dolor quos nulla itaque. Tempora laboriosam ducimus mollitia, quam.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, voluptatum. Nobis labore nesciunt architecto, nostrum minima non maiores sint, pariatur vero accusamus nam libero soluta, cum veniam asperiores. In, placeat.</div>
+        <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi nesciunt molestias dignissimos sapiente porro consequatur deserunt, nostrum quis temporibus, repellat dolorum accusamus animi, minus minima quibusdam illo velit, ratione consequuntur!</div>
       </div>
       <div class="overflow-hidden">
-      <div class="parallux-item" data-parallux-ratio="-0.1">
-        <img src="http://lorempixel.com/800/420/" alt="">
-      </div>
-      <div class="parallux-item" data-parallux-ratio="0.1">
-        <img src="http://lorempixel.com/800/640/" alt="">
-      </div>
+        <div class="parallux-item" data-parallux-ratio="-0.1">
+          <img src="http://lorempixel.com/800/420/" alt="">
+        </div>
+        <div class="parallux-item" data-parallux-ratio="0.1">
+          <img src="http://lorempixel.com/800/640/" alt="">
+        </div>
       </div>
       <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus accusantium nihil reprehenderit qui inventore expedita praesentium recusandae earum quisquam. Officiis doloremque natus, perferendis reprehenderit ducimus molestias tenetur, illum adipisci debitis.</div>
       <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum tenetur maiores aspernatur inventore. Voluptatum sunt porro nam cum. Odio inventore atque impedit eius nesciunt minus esse fuga, placeat dolorem provident.</div>
       <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum tenetur maiores aspernatur inventore. Voluptatum sunt porro nam cum. Odio inventore atque impedit eius nesciunt minus esse fuga, placeat dolorem provident.</div>
       <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum tenetur maiores aspernatur inventore. Voluptatum sunt porro nam cum. Odio inventore atque impedit eius nesciunt minus esse fuga, placeat dolorem provident.</div>
       <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum tenetur maiores aspernatur inventore. Voluptatum sunt porro nam cum. Odio inventore atque impedit eius nesciunt minus esse fuga, placeat dolorem provident.</div>
-      <div class="parallux-item" data-parallux-ratio="0.05">
+      <div class="parallux-item" data-parallux-ratio="0.1">
         <img src="http://lorempixel.com/800/520/" alt="">
       </div>
       <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum tenetur maiores aspernatur inventore. Voluptatum sunt porro nam cum. Odio inventore atque impedit eius nesciunt minus esse fuga, placeat dolorem provident.</div>
@@ -125,20 +200,20 @@
       <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi eius aspernatur hic perspiciatis assumenda nesciunt dolorem facere velit nulla natus molestias consectetur officiis accusamus perferendis soluta accusantium fugiat ipsa, numquam!</div>
       <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit autem aliquid voluptatem rerum quisquam tempora dolor totam possimus ipsum nulla. Quo assumenda aperiam veritatis maiores tempore facilis quis, reiciendis aspernatur.</div>
       <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo aliquid laboriosam culpa perferendis nemo consequatur id quam laudantium minima dolor porro, necessitatibus quasi omnis consequuntur. Accusamus necessitatibus molestiae, ut architecto.</div>
-
-    </div>
-    <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo modi deleniti molestias, iste, eum esse. Pariatur quis suscipit tempore, facilis vero incidunt laboriosam quibusdam, quam, possimus animi modi earum aspernatur.</div>
-    <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus sunt, possimus tempora atque officia itaque quibusdam amet sapiente laboriosam hic libero quos voluptatibus aperiam corporis, nisi a delectus alias. Consequatur!</div>
-    <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum, hic doloribus dolorem veniam praesentium possimus officiis cum distinctio eius, ipsam aliquid recusandae, magnam vel quidem nesciunt pariatur! Perferendis, natus, impedit.</div>
-    <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut rerum, fugit. Quae odio autem, voluptatum! Aspernatur deleniti, quia et officia quo, quidem libero praesentium rerum velit facere deserunt perferendis accusantium?</div>
-    <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus qui, placeat enim nesciunt dolore unde, aspernatur corporis praesentium provident aperiam suscipit saepe ad consequatur commodi, similique doloremque tenetur eligendi repellat.</div>
-    <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque illum quod laudantium quam dolorum nostrum tempora quisquam officia, expedita saepe omnis, facere, autem sapiente ea consequatur aut cupiditate laborum voluptatum.</div>
-    <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis dolorum ratione quidem, aliquid cumque quasi perspiciatis, veniam quam maiores excepturi, dolor. Harum eius error totam. Beatae hic praesentium quo fuga.</div>
-    <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima explicabo deserunt, praesentium eum delectus ipsam ipsum quis aliquid nulla maxime consequatur sapiente officiis, voluptate pariatur atque quas id repellendus assumenda.</div>
-    <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia dolorem aliquid praesentium cumque sit vero, ducimus atque et. Atque voluptate, dicta nihil obcaecati quo iusto aliquam nam perferendis nemo illum.</div>
+    </section>
+    <section>
+      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo modi deleniti molestias, iste, eum esse. Pariatur quis suscipit tempore, facilis vero incidunt laboriosam quibusdam, quam, possimus animi modi earum aspernatur.</div>
+      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus sunt, possimus tempora atque officia itaque quibusdam amet sapiente laboriosam hic libero quos voluptatibus aperiam corporis, nisi a delectus alias. Consequatur!</div>
+      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum, hic doloribus dolorem veniam praesentium possimus officiis cum distinctio eius, ipsam aliquid recusandae, magnam vel quidem nesciunt pariatur! Perferendis, natus, impedit.</div>
+      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut rerum, fugit. Quae odio autem, voluptatum! Aspernatur deleniti, quia et officia quo, quidem libero praesentium rerum velit facere deserunt perferendis accusantium?</div>
+      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus qui, placeat enim nesciunt dolore unde, aspernatur corporis praesentium provident aperiam suscipit saepe ad consequatur commodi, similique doloremque tenetur eligendi repellat.</div>
+      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque illum quod laudantium quam dolorum nostrum tempora quisquam officia, expedita saepe omnis, facere, autem sapiente ea consequatur aut cupiditate laborum voluptatum.</div>
+      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis dolorum ratione quidem, aliquid cumque quasi perspiciatis, veniam quam maiores excepturi, dolor. Harum eius error totam. Beatae hic praesentium quo fuga.</div>
+      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima explicabo deserunt, praesentium eum delectus ipsam ipsum quis aliquid nulla maxime consequatur sapiente officiis, voluptate pariatur atque quas id repellendus assumenda.</div>
+      <div class="test">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia dolorem aliquid praesentium cumque sit vero, ducimus atque et. Atque voluptate, dicta nihil obcaecati quo iusto aliquam nam perferendis nemo illum.</div>
+    </section>
   </div>
   <script src="../dist/parallux.min.js"></script>
-
   <script>
   var elems = document.querySelectorAll('.parallux-container');
 

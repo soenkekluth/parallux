@@ -11,9 +11,7 @@ export default class Parallux {
     this.init();
   }
 
-
   init() {
-
     this.onScroll = this.onScroll.bind(this);
     this.onResize = this.onResize.bind(this);
 
@@ -34,16 +32,9 @@ export default class Parallux {
     }
   }
 
-
   startRender() {
     if(!this.state.rendering){
-      // this.lazyView.update();
-
-
-      // this.lazyView.update();
       this.state.rendering = true;
-
-
       this.scroll.on('scroll:start', this.onScroll);
       this.scroll.on('scroll:progress', this.onScroll);
       this.scroll.on('scroll:stop', this.onScroll);
@@ -54,36 +45,26 @@ export default class Parallux {
 
   stopRender() {
     if(this.state.rendering){
-
       this.state.rendering = false;
       this.scroll.off('scroll:start', this.onScroll);
       this.scroll.off('scroll:progress', this.onScroll);
       this.scroll.off('scroll:stop', this.onScroll);
       this.scroll.off('scroll:resize', this.onResize);
     }
-    // this.onScroll();
   }
-
 
   onScroll() {
 
     const scrollY = this.scroll.y;
-    // const pos2 = this.elem.getBoundingClientRect();
     const pos = this.lazyView.position;
-    // console.log(pos)
-
     const diff = (pos.bottom - scrollY);
-    // console.log('diff', diff)
-
-    // console.log(scrollY, pos)
+    const diff = (pos.bottom - scrollY);
     for(let i = 0, l = this.elements.length; i<l; i++){
       const elem = this.elements[i];
       const ratio = parseFloat(elem.dataset.paralluxRatio);
       const y = (diff * ratio);
-      // console.log('y', y)
       // elem.setAttribute('style', 'transform: translate3d(0px, '+y+'px, 0px)');
       elem.setAttribute('style', 'transform: translateY('+y+'px)');
-
     }
   }
 

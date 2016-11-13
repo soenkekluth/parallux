@@ -1,5 +1,6 @@
 import LazyView from 'lazyview';
 import assign from 'object-assign';
+// import Prefixer from 'inline-style-prefixer'
 
 const defaults = {
   lazyView: {},
@@ -11,9 +12,7 @@ export default class Parallux {
 
   constructor(elem, options = {}) {
     this.elem = elem;
-
     this.options = assign({}, defaults, options);
-
     this.state = {
       rendering: false
     }
@@ -33,15 +32,16 @@ export default class Parallux {
     this.lazyView.on('enter', this.startRender.bind(this));
     this.lazyView.on('exit', this.stopRender.bind(this));
 
-    if(this.lazyView.state.inView) {
-      setTimeout(()=>{
+    setTimeout(() => {
+      if (this.lazyView.state.inView) {
         this.startRender();
-      }, 10)
-    }
+      }
+    }, 10)
   }
 
   startRender() {
-    if(!this.state.rendering){
+    if (!this.state.rendering) {
+      // this.prefixer = new Prefixer();
       this.state.rendering = true;
       this.scroll.on('scroll:start', this.onScroll);
       this.scroll.on('scroll:progress', this.onScroll);
@@ -52,7 +52,7 @@ export default class Parallux {
   }
 
   stopRender() {
-    if(this.state.rendering){
+    if (this.state.rendering) {
       this.state.rendering = false;
       this.scroll.off('scroll:start', this.onScroll);
       this.scroll.off('scroll:progress', this.onScroll);
@@ -64,13 +64,12 @@ export default class Parallux {
   onScroll() {
 
     const diff = (this.lazyView.position.bottom - this.scroll.y);
-    this.elements.forEach(elem => {
-      // const elem = this.elements[i];
-      const ratio = parseFloat(elem.dataset.paralluxRatio);
-      const y = (diff * ratio);
-       // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
-      elem.style.cssText = 'transform: translateY('+y+'px)';
-    });
+    for (let i = 0, l = this.elements.length; i < l; i++) {
+      const elem = this.elements[i];
+      const y = diff * parseFloat(elem.dataset.paralluxRatio);
+      // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
+      elem.style.cssText = 'transform: translateY(' + y + 'px)';
+    };
 
     // for(let i = 0, l = this.elements.length; i<l; i++){
     //   const elem = this.elements[i];

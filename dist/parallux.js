@@ -18,6 +18,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+// import Prefixer from 'inline-style-prefixer'
+
 var defaults = {
   lazyView: {},
   container: '.parallux-container',
@@ -31,9 +33,7 @@ var Parallux = function () {
     _classCallCheck(this, Parallux);
 
     this.elem = elem;
-
     this.options = (0, _objectAssign2.default)({}, defaults, options);
-
     this.state = {
       rendering: false
     };
@@ -57,16 +57,17 @@ var Parallux = function () {
       this.lazyView.on('enter', this.startRender.bind(this));
       this.lazyView.on('exit', this.stopRender.bind(this));
 
-      if (this.lazyView.state.inView) {
-        setTimeout(function () {
+      setTimeout(function () {
+        if (_this.lazyView.state.inView) {
           _this.startRender();
-        }, 10);
-      }
+        }
+      }, 10);
     }
   }, {
     key: 'startRender',
     value: function startRender() {
       if (!this.state.rendering) {
+        // this.prefixer = new Prefixer();
         this.state.rendering = true;
         this.scroll.on('scroll:start', this.onScroll);
         this.scroll.on('scroll:progress', this.onScroll);
@@ -91,13 +92,12 @@ var Parallux = function () {
     value: function onScroll() {
 
       var diff = this.lazyView.position.bottom - this.scroll.y;
-      this.elements.forEach(function (elem) {
-        // const elem = this.elements[i];
-        var ratio = parseFloat(elem.dataset.paralluxRatio);
-        var y = diff * ratio;
+      for (var i = 0, l = this.elements.length; i < l; i++) {
+        var elem = this.elements[i];
+        var y = diff * parseFloat(elem.dataset.paralluxRatio);
         // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
         elem.style.cssText = 'transform: translateY(' + y + 'px)';
-      });
+      };
 
       // for(let i = 0, l = this.elements.length; i<l; i++){
       //   const elem = this.elements[i];

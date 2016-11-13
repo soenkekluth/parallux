@@ -98,7 +98,8 @@ var Parallux = function () {
         var ratio = parseFloat(elem.dataset.paralluxRatio);
         var y = diff * ratio;
         // console.log('y', y)
-        elem.setAttribute('style', 'transform: translate3d(0px, ' + y + 'px, 0px)');
+        // elem.setAttribute('style', 'transform: translate3d(0px, '+y+'px, 0px)');
+        elem.setAttribute('style', 'transform: translateY(' + y + 'px)');
       }
     }
   }, {

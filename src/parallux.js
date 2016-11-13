@@ -79,9 +79,10 @@ export default class Parallux {
     for(let i = 0, l = this.elements.length; i<l; i++){
       const elem = this.elements[i];
       const ratio = parseFloat(elem.dataset.paralluxRatio);
-      const y = diff * ratio;
+      const y = (diff * ratio);
       // console.log('y', y)
-      elem.setAttribute('style', 'transform: translate3d(0px, '+y+'px, 0px)');
+      // elem.setAttribute('style', 'transform: translate3d(0px, '+y+'px, 0px)');
+      elem.setAttribute('style', 'transform: translateY('+y+'px)');
 
     }
   }

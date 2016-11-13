@@ -10,19 +10,34 @@ var _lazyview = require('lazyview');
 
 var _lazyview2 = _interopRequireDefault(_lazyview);
 
+var _objectAssign = require('object-assign');
+
+var _objectAssign2 = _interopRequireDefault(_objectAssign);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var defaults = {
+  lazyView: {},
+  container: '.parallux-container',
+  items: '.parallux-item'
+};
+
 var Parallux = function () {
-  function Parallux(elem, options) {
+  function Parallux(elem) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     _classCallCheck(this, Parallux);
 
     this.elem = elem;
-    this.options = options;
+
+    this.options = (0, _objectAssign2.default)({}, defaults, options);
+
     this.state = {
       rendering: false
     };
+
     this.init();
   }
 
@@ -34,10 +49,8 @@ var Parallux = function () {
       this.onScroll = this.onScroll.bind(this);
       this.onResize = this.onResize.bind(this);
 
-      this.elements = this.elem.querySelectorAll('.parallux-item');
-      console.log(this.elements);
-
-      this.lazyView = new _lazyview2.default(this.elem, { enterClass: 'in-view', ignoreInitial: false });
+      this.elements = typeof this.options.items === 'string' ? this.elem.querySelectorAll(this.options.items) : this.options.items;
+      this.lazyView = new _lazyview2.default(this.elem, this.options.lazyView);
 
       this.scroll = this.lazyView.scroll;
 
@@ -54,12 +67,7 @@ var Parallux = function () {
     key: 'startRender',
     value: function startRender() {
       if (!this.state.rendering) {
-        // this.lazyView.update();
-
-
-        // this.lazyView.update();
         this.state.rendering = true;
-
         this.scroll.on('scroll:start', this.onScroll);
         this.scroll.on('scroll:progress', this.onScroll);
         this.scroll.on('scroll:stop', this.onScroll);
@@ -71,36 +79,33 @@ var Parallux = function () {
     key: 'stopRender',
     value: function stopRender() {
       if (this.state.rendering) {
-
         this.state.rendering = false;
         this.scroll.off('scroll:start', this.onScroll);
         this.scroll.off('scroll:progress', this.onScroll);
         this.scroll.off('scroll:stop', this.onScroll);
         this.scroll.off('scroll:resize', this.onResize);
       }
-      // this.onScroll();
     }
   }, {
     key: 'onScroll',
     value: function onScroll() {
 
-      var scrollY = this.scroll.y;
-      // const pos2 = this.elem.getBoundingClientRect();
-      var pos = this.lazyView.position;
-      // console.log(pos)
-
-      var diff = pos.bottom - scrollY;
-      // console.log('diff', diff)
-
-      // console.log(scrollY, pos)
-      for (var i = 0, l = this.elements.length; i < l; i++) {
-        var elem = this.elements[i];
+      var diff = this.lazyView.position.bottom - this.scroll.y;
+      this.elements.forEach(function (elem) {
+        // const elem = this.elements[i];
         var ratio = parseFloat(elem.dataset.paralluxRatio);
         var y = diff * ratio;
-        // console.log('y', y)
-        // elem.setAttribute('style', 'transform: translate3d(0px, '+y+'px, 0px)');
-        elem.setAttribute('style', 'transform: translateY(' + y + 'px)');
-      }
+        // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
+        elem.style.cssText = 'transform: translateY(' + y + 'px)';
+      });
+
+      // for(let i = 0, l = this.elements.length; i<l; i++){
+      //   const elem = this.elements[i];
+      //   const ratio = parseFloat(elem.dataset.paralluxRatio);
+      //   const y = (diff * ratio);
+      //    elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
+      //   // elem.style.cssText = 'transform: translateY('+y+'px)';
+      // }
     }
   }, {
     key: 'onResize',

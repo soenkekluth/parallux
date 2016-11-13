@@ -1,13 +1,23 @@
 import LazyView from 'lazyview';
+import assign from 'object-assign';
+
+const defaults = {
+  lazyView: {},
+  container: '.parallux-container',
+  items: '.parallux-item'
+};
 
 export default class Parallux {
 
-  constructor(elem, options) {
+  constructor(elem, options = {}) {
     this.elem = elem;
-    this.options = options;
+
+    this.options = assign({}, defaults, options);
+
     this.state = {
       rendering: false
     }
+
     this.init();
   }
 
@@ -15,10 +25,8 @@ export default class Parallux {
     this.onScroll = this.onScroll.bind(this);
     this.onResize = this.onResize.bind(this);
 
-    this.elements = this.elem.querySelectorAll('.parallux-item');
-    console.log(this.elements)
-
-    this.lazyView = new LazyView(this.elem,{enterClass:'in-view', ignoreInitial:false});
+    this.elements = (typeof this.options.items === 'string') ? this.elem.querySelectorAll(this.options.items) : this.options.items;
+    this.lazyView = new LazyView(this.elem, this.options.lazyView);
 
     this.scroll = this.lazyView.scroll;
 
@@ -55,17 +63,22 @@ export default class Parallux {
 
   onScroll() {
 
-    const scrollY = this.scroll.y;
-    const pos = this.lazyView.position;
-    const diff = (pos.bottom - scrollY);
-    const diff = (pos.bottom - scrollY);
-    for(let i = 0, l = this.elements.length; i<l; i++){
-      const elem = this.elements[i];
+    const diff = (this.lazyView.position.bottom - this.scroll.y);
+    this.elements.forEach(elem => {
+      // const elem = this.elements[i];
       const ratio = parseFloat(elem.dataset.paralluxRatio);
       const y = (diff * ratio);
-      // elem.setAttribute('style', 'transform: translate3d(0px, '+y+'px, 0px)');
-      elem.setAttribute('style', 'transform: translateY('+y+'px)');
-    }
+       // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
+      elem.style.cssText = 'transform: translateY('+y+'px)';
+    });
+
+    // for(let i = 0, l = this.elements.length; i<l; i++){
+    //   const elem = this.elements[i];
+    //   const ratio = parseFloat(elem.dataset.paralluxRatio);
+    //   const y = (diff * ratio);
+    //    elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
+    //   // elem.style.cssText = 'transform: translateY('+y+'px)';
+    // }
   }
 
   onResize() {

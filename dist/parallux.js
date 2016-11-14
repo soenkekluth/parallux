@@ -94,7 +94,8 @@ var Parallux = function () {
       var diff = this.lazyView.position.bottom - this.scroll.y;
       for (var i = 0, l = this.elements.length; i < l; i++) {
         var elem = this.elements[i];
-        var y = diff * parseFloat(elem.dataset.paralluxRatio);
+        var offset = parseFloat(elem.dataset.paralluxOffset) || 0;
+        var y = offset + diff * parseFloat(elem.dataset.paralluxRatio);
         // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
         elem.style.cssText = 'transform: translateY(' + y + 'px)';
       };

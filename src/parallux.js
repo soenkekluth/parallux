@@ -66,7 +66,8 @@ export default class Parallux {
     const diff = (this.lazyView.position.bottom - this.scroll.y);
     for (let i = 0, l = this.elements.length; i < l; i++) {
       const elem = this.elements[i];
-      const y = diff * parseFloat(elem.dataset.paralluxRatio);
+      const offset = parseFloat(elem.dataset.paralluxOffset) || 0;
+      const y = offset + diff * parseFloat(elem.dataset.paralluxRatio);
       // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
       elem.style.cssText = 'transform: translateY(' + y + 'px)';
     };

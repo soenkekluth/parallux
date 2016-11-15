@@ -90,7 +90,6 @@ export default class Parallux {
     for (let i = 0, l = this.elements.length; i < l; i++) {
       const elem = this.elements[i];
       elem.y = elem.offset + diff * elem.ratio;
-      elem.render();
     };
   }
 
@@ -120,8 +119,28 @@ class ParalluxItem {
     this.elem = elem;
     this.options = options;
     this._y = 0;
+    this._lastY = 0;
     this.ratio = parseFloat(elem.dataset.paralluxRatio) || 0;
     this.offset = parseFloat(elem.dataset.paralluxOffset) || 0;
+    this.max = parseFloat(elem.dataset.paralluxMax);
+
+    if(!isNaN(this.max)){
+      this.processValue = this.processMaxValue.bind(this);
+    }else{
+      this.processValue = this.processNullValue.bind(this);
+    }
+  }
+
+
+  processNullValue(value){
+    return value;
+  }
+
+  processMaxValue(value){
+    if(value < this.max){
+      return this.max;
+    }
+    return value;
   }
 
   cachePosition(offset = 0) {
@@ -135,7 +154,6 @@ class ParalluxItem {
 
 
   render() {
-
     this.elem.style.cssText = 'transform: translateY(' + this._y + 'px)';
     // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
   }
@@ -146,7 +164,11 @@ class ParalluxItem {
   }
 
   set y(value) {
-    this._y = value;
+    this._y = this.processValue(value);
+    if(this._lastY !== this._y){
+      this.render();
+    }
+    this._lastY = this._y;
   }
 
   get y() {

@@ -8,35 +8,55 @@
   <title>Parallux Demo</title>
   <style>
 
-  body,
+
   html {
+
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+
     font-family: sans-serif;
     font-size: 26px;
     margin : 0;
     height: 100%;
-    min-height: 100%;
+
+
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
 
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     font-smoothing: antialiased;
 
-    text-size-adjust: 100%;
-
     text-rendering: optimizeSpeed;
-  }
 
-  html {
     overflow-y: scroll;
+
+    /*color: #ffffff;*/
+    color: #222;
   }
 
+
+  *, *::before, *::after {
+    box-sizing: inherit; }
+
+
+  body {
+    position: relative;
+    margin: 0;
+    height: 100%;
+  }
+
+  article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+    display: block; }
 
 
 
   .page {
-    position: relative;
+    /*position: relative;*/
     height: 100%;
     min-height: 100%;
-    padding-bottom: 3em;
+    /*padding-bottom: 3em;*/
    }
 
   .header {
@@ -64,7 +84,7 @@
 
   .parallux-container {
     position: relative;
-    margin-bottom: 2em;
+    /*margin-bottom: 2em;*/
     /*border-bottom: 1px solid black;*/
   }
 
@@ -103,15 +123,15 @@
 
   .left {
     float: left;
-    width: 40%;
+    width: 50%;
     padding: 4%;
 
   }
 
   .right {
     float: right;
-   width: 40%;
-       padding: 4%;
+    width: 50%;
+    padding: 4%;
   }
 
   footer{
@@ -120,91 +140,109 @@
   }
 
   section{
+    /*height: 100%;*/
     padding-top: 3em;
     padding-bottom: 3em;
+
+    margin-bottom: 2em;
   }
+
+  .blue{
+    /*background-color: #53b2e5;*/
+  }
+
+  .dark {
+    /*background-color: #31343c;*/
+  }
+
+  .orange {
+   /*background-color: #e26a6a;*/
+  }
+
   </style>
 </head>
 
 <body>
   <div class="page">
-    <header class="header parallux-container">
+
+    <header class="parallux-container header">
       <div class="block">
-          <h1 class="parallux-item" data-parallux-ratio="-0.45">Parallux</h1>
-          <p class="parallux-item" data-parallux-ratio="-0.4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam quis vero commodi voluptates assumenda minima nesciunt pariatur deserunt harum expedita, optio cupiditate temporibus sit itaque, at illo quibusdam repellendus labore.</p>
+        <h1 class="parallux-item" data-parallux-ratio="0.4">Parallux</h1>
+        <p class="parallux-item" data-parallux-ratio="0.3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam quis vero commodi voluptates assumenda minima nesciunt pariatur deserunt harum expedita, optio cupiditate temporibus sit itaque, at illo quibusdam repellendus labore.</p>
       </div>
     </header>
 
-    <section class="parallux-container block">
+    <section class="parallux-container blue">
+      <div class="block">
         <div class="left">
-          <div class="parallux-item" data-parallux-ratio="0.1">
+          <div class="parallux-item" data-parallux-ratio="-0.1">
             <img src="http://lorempixel.com/480/320/" alt="">
             </div>
             <br>
-            <div class="parallux-item" data-parallux-ratio="0.15">
+            <div class="parallux-item" data-parallux-ratio="-0.12">
             <img src="http://lorempixel.com/320/280/" alt="">
           </div>
         </div>
         <div class="right">
           <article>
-            <h1 class="parallux-item" data-parallux-ratio="0.1">Lorem Ipsum</h1>
-            <p class="parallux-item" data-parallux-ratio="0.2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum quae dignissimos pariatur praesentium quidem accusantium! Deserunt pariatur, similique, nobis minima earum nihil enim blanditiis delectus ut. Commodi eveniet, nobis illo</p>
-            <p class="parallux-item" data-parallux-ratio="0.4" data-parallux-offset="50">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum quae dignissimos pariatur praesentium quidem accusantium! Deserunt pariatur, similique, nobis minima earum nihil enim blanditiis delectus ut. Commodi eveniet, nobis illo</p>
+            <h1 class="parallux-item" data-parallux-ratio="-0.3">Lorem Ipsum</h1>
+            <p class="parallux-item" data-parallux-ratio="-0.32">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum quae dignissimos pariatur praesentium quidem accusantium! Deserunt pariatur, similique, nobis minima earum nihil enim blanditiis delectus ut. Commodi eveniet, nobis illo</p>
+            <p class="parallux-item" data-parallux-ratio="-0.34">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum quae dignissimos pariatur praesentium quidem accusantium! Deserunt pariatur, similique, nobis minima earum nihil enim blanditiis delectus ut. Commodi eveniet, nobis illo</p>
           </article>
         </div>
+      </div>
     </section>
 
-    <section class="parallux-container block">
+    <section class="parallux-container block orange">
     <div class="left">
 
 
-        <p class="parallux-item" data-parallux-ratio="0.1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis minus iusto magnam, eum? Magnam nihil cum illo, beatae quisquam sequi quos atque ea, minus dignissimos fugiat, nesciunt pariatur mollitia provident.</p>
-        <p class="parallux-item" data-parallux-ratio="0.15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat voluptatem est aliquam, ipsa eum saepe at nemo nobis harum provident, amet vero consequuntur architecto eius accusantium porro dicta recusandae quidem!</p>
-        <p class="parallux-item" data-parallux-ratio="0.2" data-parallux-offset="50">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit fuga neque minus. Blanditiis vitae, maiores totam itaque odit sint nesciunt facere delectus excepturi amet nam magnam tempora labore, ducimus assumenda.</p>
-        <p class="parallux-item" data-parallux-ratio="0.3" data-parallux-offset="100">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores similique officia veritatis assumenda quos earum atque, numquam optio harum nostrum officiis sapiente molestiae reprehenderit. Exercitationem cupiditate quaerat, earum doloremque natus.</p>
+        <p class="parallux-item" data-parallux-ratio="-0.3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis minus iusto magnam, eum? Magnam nihil cum illo, beatae quisquam sequi quos atque ea, minus dignissimos fugiat, nesciunt pariatur mollitia provident.</p>
+        <p class="parallux-item" data-parallux-ratio="-0.35">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat voluptatem est aliquam, ipsa eum saepe at nemo nobis harum provident, amet vero consequuntur architecto eius accusantium porro dicta recusandae quidem!</p>
+        <p class="parallux-item" data-parallux-ratio="-0.4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit fuga neque minus. Blanditiis vitae, maiores totam itaque odit sint nesciunt facere delectus excepturi amet nam magnam tempora labore, ducimus assumenda.</p>
 
       </div>
       <div class="right">
 
-      <h1 class="parallux-item" data-parallux-ratio="0.2" data-parallux-offset="-80">Lorem Ipsum</h1>
-      <div class="parallux-item" data-parallux-ratio="0.15">
+      <h1 class="parallux-item" data-parallux-ratio="-0.1">Lorem Ipsum</h1>
+      <div class="parallux-item" data-parallux-ratio="-0.13">
         <img src="http://lorempixel.com/800/460/" alt="">
       </div>
-      <div class="parallux-item" data-parallux-ratio="0.3" data-parallux-offset="50">
+      <div class="parallux-item" data-parallux-ratio="-0.16">
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat ea ad vero exercitationem, sit maiores ipsa nam doloribus quae similique alias voluptas itaque quidem, culpa debitis modi eius, rerum. Hic!</p>
        </div>
       </div>
     </section>
 
-    <section class="parallux-container block overflow-hidden">
+    <section class="parallux-container block dark">
       <div class="right">
         <div class="parallux-item" data-parallux-ratio="0.1">
           <img src="http://lorempixel.com/480/320/" alt="">
           </div>
-          <div class="parallux-item" data-parallux-ratio="0.2" data-parallux-offset="30">
+          <div class="parallux-item" data-parallux-ratio="0.2">
           <img src="http://lorempixel.com/320/180/" alt="">
         </div>
       </div>
       <div class="left">
         <article>
-          <h1 class="parallux-item" data-parallux-ratio="-0.1">Lorem Ipsum</h1>
+          <h1 class="parallux-item" data-parallux-ratio="-0.">Lorem Ipsum</h1>
           <p class="parallux-item" data-parallux-ratio="-0.05">Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p>
-          <p class="parallux-item" data-parallux-ratio="-0.2" data-parallux-offset="100">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum quae dignissimos pariatur praesentium quidem accusantium! Deserunt pariatur, similique, nobis minima earum nihil enim blanditiis delectus ut. Commodi eveniet, nobis illo</p>
+          <p class="parallux-item" data-parallux-ratio="-0.2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum quae dignissimos pariatur praesentium quidem accusantium! Deserunt pariatur, similique, nobis minima earum nihil enim blanditiis delectus ut. Commodi eveniet, nobis illo</p>
         </article>
       </div>
 
     </section>
     <footer class="parallux-container block">
 
-      <p class="parallux-item" data-parallux-ratio="0.1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo modi deleniti molestias, iste, eum esse. Pariatur quis suscipit tempore, facilis vero incidunt laboriosam quibusdam, quam, possimus animi modi earum aspernatur.</p>
-      <p class="parallux-item" data-parallux-ratio="0.15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus sunt, possimus tempora atque officia itaque quibusdam amet sapiente laboriosam hic libero quos voluptatibus aperiam corporis, nisi a delectus alias. Consequatur!</p>
-      <p class="parallux-item" data-parallux-ratio="0.2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum, hic doloribus dolorem veniam praesentium possimus officiis cum distinctio eius, ipsam aliquid recusandae, magnam vel quidem nesciunt pariatur! Perferendis, natus, impedit.</p>
-      <p class="parallux-item" data-parallux-ratio="0.25">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut rerum, fugit. Quae odio autem, voluptatum! Aspernatur deleniti, quia et officia quo, quidem libero praesentium rerum velit facere deserunt perferendis accusantium?</p>
-      <p class="parallux-item" data-parallux-ratio="0.3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia dolorem aliquid praesentium cumque sit vero, ducimus atque et. Atque voluptate, dicta nihil obcaecati quo iusto aliquam nam perferendis nemo illum.</p>
-      <p class="parallux-item" data-parallux-ratio="0.35">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia dolorem aliquid praesentium cumque sit vero, ducimus atque et. Atque voluptate, dicta nihil obcaecati quo iusto aliquam nam perferendis nemo illum.</p>
-      <p class="parallux-item" data-parallux-ratio="0.4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia dolorem aliquid praesentium cumque sit vero, ducimus atque et. Atque voluptate, dicta nihil obcaecati quo iusto aliquam nam perferendis nemo illum.</p>
-      <p class="parallux-item" data-parallux-ratio="0.45">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia dolorem aliquid praesentium cumque sit vero, ducimus atque et. Atque voluptate, dicta nihil obcaecati quo iusto aliquam nam perferendis nemo illum.</p>
-      <p class="parallux-item" data-parallux-ratio="0.5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia dolorem aliquid praesentium cumque sit vero, ducimus atque et. Atque voluptate, dicta nihil obcaecati quo iusto aliquam nam perferendis nemo illum.</p>
+      <p class="parallux-item" data-parallux-ratio="-0.1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo modi deleniti molestias, iste, eum esse. Pariatur quis suscipit tempore, facilis vero incidunt laboriosam quibusdam, quam, possimus animi modi earum aspernatur.</p>
+      <p class="parallux-item" data-parallux-ratio="-0.15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus sunt, possimus tempora atque officia itaque quibusdam amet sapiente laboriosam hic libero quos voluptatibus aperiam corporis, nisi a delectus alias. Consequatur!</p>
+      <p class="parallux-item" data-parallux-ratio="-0.2">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum, hic doloribus dolorem veniam praesentium possimus officiis cum distinctio eius, ipsam aliquid recusandae, magnam vel quidem nesciunt pariatur! Perferendis, natus, impedit.</p>
+      <p class="parallux-item" data-parallux-ratio="-0.25">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut rerum, fugit. Quae odio autem, voluptatum! Aspernatur deleniti, quia et officia quo, quidem libero praesentium rerum velit facere deserunt perferendis accusantium?</p>
+      <p class="parallux-item" data-parallux-ratio="-0.3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia dolorem aliquid praesentium cumque sit vero, ducimus atque et. Atque voluptate, dicta nihil obcaecati quo iusto aliquam nam perferendis nemo illum.</p>
+      <p class="parallux-item" data-parallux-ratio="-0.35">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia dolorem aliquid praesentium cumque sit vero, ducimus atque et. Atque voluptate, dicta nihil obcaecati quo iusto aliquam nam perferendis nemo illum.</p>
+      <p class="parallux-item" data-parallux-ratio="-0.4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia dolorem aliquid praesentium cumque sit vero, ducimus atque et. Atque voluptate, dicta nihil obcaecati quo iusto aliquam nam perferendis nemo illum.</p>
+      <p class="parallux-item" data-parallux-ratio="-0.45">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia dolorem aliquid praesentium cumque sit vero, ducimus atque et. Atque voluptate, dicta nihil obcaecati quo iusto aliquam nam perferendis nemo illum.</p>
+      <p class="parallux-item" data-parallux-ratio="-0.5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia dolorem aliquid praesentium cumque sit vero, ducimus atque et. Atque voluptate, dicta nihil obcaecati quo iusto aliquam nam perferendis nemo illum.</p>
 
     </footer>
   </div>

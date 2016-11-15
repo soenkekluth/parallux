@@ -32,8 +32,12 @@ var Parallux = function () {
 
     _classCallCheck(this, Parallux);
 
+    this.elements = [];
+
+
     this.elem = elem;
     this.options = (0, _objectAssign2.default)({}, defaults, options);
+
     this.state = {
       rendering: false
     };
@@ -46,12 +50,17 @@ var Parallux = function () {
     value: function init() {
       var _this = this;
 
-      this.onScroll = this.onScroll.bind(this);
+      this.onScroll = this.render.bind(this);
       this.onResize = this.onResize.bind(this);
 
-      this.elements = typeof this.options.items === 'string' ? this.elem.querySelectorAll(this.options.items) : this.options.items;
-      this.lazyView = new _lazyview2.default(this.elem, this.options.lazyView);
+      var children = typeof this.options.items === 'string' ? this.elem.querySelectorAll(this.options.items) : this.options.items;
 
+      for (var i = 0, l = children.length; i < l; i++) {
+        this.elements[i] = new ParalluxItem(children[i]);
+      }
+
+      this.initialRender = true;
+      this.lazyView = new _lazyview2.default(this.elem, this.options.lazyView);
       this.scroll = this.lazyView.scroll;
 
       this.lazyView.on('enter', this.startRender.bind(this));
@@ -64,16 +73,28 @@ var Parallux = function () {
       }, 10);
     }
   }, {
+    key: 'cachePosition',
+    value: function cachePosition() {
+      for (var i = 0, l = this.elements.length; i < l; i++) {
+        var el = this.elements[i];
+        el.cachePosition(this.lazyView.position.bottom);
+      }
+    }
+  }, {
     key: 'startRender',
     value: function startRender() {
       if (!this.state.rendering) {
+        if (this.initialRender) {
+          this.initialRender = false;
+          this.cachePosition();
+        }
         // this.prefixer = new Prefixer();
         this.state.rendering = true;
         this.scroll.on('scroll:start', this.onScroll);
         this.scroll.on('scroll:progress', this.onScroll);
         this.scroll.on('scroll:stop', this.onScroll);
         this.scroll.on('scroll:resize', this.onResize);
-        this.onScroll();
+        this.render();
       }
     }
   }, {
@@ -88,25 +109,29 @@ var Parallux = function () {
       }
     }
   }, {
-    key: 'onScroll',
-    value: function onScroll() {
+    key: 'render',
+    value: function render() {
+      // const diff = (this.lazyView.position.bottom - this.scroll.y);
+      var diff = this.scroll.y - this.lazyView.position.bottom;
 
-      var diff = this.lazyView.position.bottom - this.scroll.y;
       for (var i = 0, l = this.elements.length; i < l; i++) {
         var elem = this.elements[i];
-        var offset = parseFloat(elem.dataset.paralluxOffset) || 0;
-        var y = offset + diff * parseFloat(elem.dataset.paralluxRatio);
-        // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
-        elem.style.cssText = 'transform: translateY(' + y + 'px)';
+        elem.y = elem.offset + diff * elem.ratio;
+        elem.render();
       };
-
-      // for(let i = 0, l = this.elements.length; i<l; i++){
-      //   const elem = this.elements[i];
-      //   const ratio = parseFloat(elem.dataset.paralluxRatio);
-      //   const y = (diff * ratio);
-      //    elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
-      //   // elem.style.cssText = 'transform: translateY('+y+'px)';
-      // }
+    }
+  }, {
+    key: 'destroy',
+    value: function destroy() {
+      this.stopRender();
+      this.lazyView.destory();
+      this.onScroll = null;
+      this.onResize = null;
+      this.elem = null;
+      for (var i = 0, l = this.elements.length; i < l; i++) {
+        this.elements[i].destroy();
+      }
+      this.elements.length = 0;
     }
   }, {
     key: 'onResize',
@@ -117,4 +142,56 @@ var Parallux = function () {
 }();
 
 exports.default = Parallux;
+
+var ParalluxItem = function () {
+  function ParalluxItem(elem) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    _classCallCheck(this, ParalluxItem);
+
+    this.elem = elem;
+    this.options = options;
+    this._y = 0;
+    this.ratio = parseFloat(elem.dataset.paralluxRatio) || 0;
+    this.offset = parseFloat(elem.dataset.paralluxOffset) || 0;
+  }
+
+  _createClass(ParalluxItem, [{
+    key: 'cachePosition',
+    value: function cachePosition() {
+      var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+      var rect = this.elem.getBoundingClientRect();
+      this.position = {
+        top: rect.top - offset,
+        bottom: rect.bottom - offset
+      };
+      // console.log(this.position);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+
+      this.elem.style.cssText = 'transform: translateY(' + this._y + 'px)';
+      // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
+    }
+  }, {
+    key: 'destroy',
+    value: function destroy() {
+      this.elem = null;
+      this.options = null;
+    }
+  }, {
+    key: 'y',
+    set: function set(value) {
+      this._y = value;
+    },
+    get: function get() {
+      return this._y;
+    }
+  }]);
+
+  return ParalluxItem;
+}();
+
 module.exports = exports['default'];

@@ -10,9 +10,13 @@ const defaults = {
 
 export default class Parallux {
 
+  elements = [];
+
   constructor(elem, options = {}) {
+
     this.elem = elem;
     this.options = assign({}, defaults, options);
+
     this.state = {
       rendering: false
     }
@@ -21,12 +25,18 @@ export default class Parallux {
   }
 
   init() {
-    this.onScroll = this.onScroll.bind(this);
+
+    this.onScroll = this.render.bind(this);
     this.onResize = this.onResize.bind(this);
 
-    this.elements = (typeof this.options.items === 'string') ? this.elem.querySelectorAll(this.options.items) : this.options.items;
-    this.lazyView = new LazyView(this.elem, this.options.lazyView);
+    var children = (typeof this.options.items === 'string') ? this.elem.querySelectorAll(this.options.items) : this.options.items;
 
+    for (let i = 0, l = children.length; i < l; i++) {
+      this.elements[i] = new ParalluxItem(children[i]);
+    }
+
+    this.initialRender = true;
+    this.lazyView = new LazyView(this.elem, this.options.lazyView);
     this.scroll = this.lazyView.scroll;
 
     this.lazyView.on('enter', this.startRender.bind(this));
@@ -39,15 +49,27 @@ export default class Parallux {
     }, 10)
   }
 
+
+  cachePosition(){
+    for (let i = 0, l = this.elements.length; i < l; i++) {
+      const el = this.elements[i];
+      el.cachePosition(this.lazyView.position.bottom);
+    }
+  }
+
   startRender() {
     if (!this.state.rendering) {
+      if(this.initialRender){
+        this.initialRender = false;
+        this.cachePosition();
+      }
       // this.prefixer = new Prefixer();
       this.state.rendering = true;
       this.scroll.on('scroll:start', this.onScroll);
       this.scroll.on('scroll:progress', this.onScroll);
       this.scroll.on('scroll:stop', this.onScroll);
       this.scroll.on('scroll:resize', this.onResize);
-      this.onScroll();
+      this.render();
     }
   }
 
@@ -61,27 +83,74 @@ export default class Parallux {
     }
   }
 
-  onScroll() {
+  render() {
+    // const diff = (this.lazyView.position.bottom - this.scroll.y);
+    const diff = (this.scroll.y - this.lazyView.position.bottom)
 
-    const diff = (this.lazyView.position.bottom - this.scroll.y);
     for (let i = 0, l = this.elements.length; i < l; i++) {
       const elem = this.elements[i];
-      const offset = parseFloat(elem.dataset.paralluxOffset) || 0;
-      const y = offset + diff * parseFloat(elem.dataset.paralluxRatio);
-      // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
-      elem.style.cssText = 'transform: translateY(' + y + 'px)';
+      elem.y = elem.offset + diff * elem.ratio;
+      elem.render();
     };
+  }
 
-    // for(let i = 0, l = this.elements.length; i<l; i++){
-    //   const elem = this.elements[i];
-    //   const ratio = parseFloat(elem.dataset.paralluxRatio);
-    //   const y = (diff * ratio);
-    //    elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
-    //   // elem.style.cssText = 'transform: translateY('+y+'px)';
-    // }
+
+  destroy() {
+    this.stopRender();
+    this.lazyView.destory();
+    this.onScroll = null;
+    this.onResize = null;
+    this.elem = null;
+    for (let i = 0, l = this.elements.length; i < l; i++) {
+      this.elements[i].destroy();
+    }
+    this.elements.length = 0;
   }
 
   onResize() {
 
   }
+}
+
+
+
+class ParalluxItem {
+
+  constructor(elem, options = {}) {
+    this.elem = elem;
+    this.options = options;
+    this._y = 0;
+    this.ratio = parseFloat(elem.dataset.paralluxRatio) || 0;
+    this.offset = parseFloat(elem.dataset.paralluxOffset) || 0;
+  }
+
+  cachePosition(offset = 0) {
+    var rect =  this.elem.getBoundingClientRect();
+    this.position = {
+      top : rect.top - offset,
+      bottom : rect.bottom - offset
+    }
+    // console.log(this.position);
+  }
+
+
+  render() {
+
+    this.elem.style.cssText = 'transform: translateY(' + this._y + 'px)';
+    // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
+  }
+
+  destroy() {
+    this.elem = null;
+    this.options = null;
+  }
+
+  set y(value) {
+    this._y = value;
+  }
+
+  get y() {
+    return this._y;
+  }
+
 }

@@ -89,7 +89,10 @@ export default class Parallux {
 
     for (let i = 0, l = this.elements.length; i < l; i++) {
       const elem = this.elements[i];
-      elem.y = elem.offset + diff * elem.ratio;
+      // elem.y = (elem.offset + diff) * elem.ratio;
+      // elem.y = (diff * elem.ratio) + elem.offset;
+      // elem.y = (diff * elem.ratio - elem.offset * elem.ratio);
+      elem.y = diff;
     };
   }
 
@@ -116,11 +119,14 @@ export default class Parallux {
 class ParalluxItem {
 
   constructor(elem, options = {}) {
+
     this.elem = elem;
     this.options = options;
     this._y = 0;
     this._lastY = 0;
+
     this.ratio = parseFloat(elem.dataset.paralluxRatio) || 0;
+    this.ratioUp = parseFloat(elem.dataset.paralluxRatioUp) || this.ratio;
     this.offset = parseFloat(elem.dataset.paralluxOffset) || 0;
     this.max = parseFloat(elem.dataset.paralluxMax);
 
@@ -164,7 +170,12 @@ class ParalluxItem {
   }
 
   set y(value) {
-    this._y = this.processValue(value);
+
+    value = this.processValue(value);
+    this._y = ((this.offset + value) * this.ratio) - (this.offset * this.ratio);
+    if(this._y < 0){
+      this._y = ((this.offset + value) * this.ratioUp) - (this.offset * this.ratioUp);
+    }
     if(this._lastY !== this._y){
       this.render();
     }

@@ -1,6 +1,6 @@
 {
   "name": "parallux",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Parallax made right",
   "main": "dist/parallux.js",
   "scripts": {

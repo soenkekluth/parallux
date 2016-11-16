@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Parallux Demo</title>
+  <style>
+
+
+  html {
+
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+
+    font-family: sans-serif;
+    font-size: 26px;
+    margin : 0;
+    height: 100%;
+
+
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+
+    text-rendering: optimizeSpeed;
+
+    overflow-y: scroll;
+
+    /*color: #ffffff;*/
+    color: #222;
+  }
+
+
+  *, *::before, *::after {
+    box-sizing: inherit; }
+
+
+  body {
+    position: relative;
+    margin: 0;
+    height: 100%;
+  }
+
+  article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+    display: block; }
+
+
+
+  .page {
+    /*position: relative;*/
+    height: 100%;
+    min-height: 100%;
+    /*padding-bottom: 3em;*/
+   }
+
+  .header {
+    height: 100%;
+    background-color: #222;
+    color: white;
+    /*padding-top: 30%;*/
+
+    padding: 4%;
+
+  }
+
+  .header .block {
+    padding-top: 15%;
+    line-height: 2;
+    font-size: 120%;
+  }
+
+  .header .block h1 {
+    /*margin: 0;*/
+    text-transform: uppercase;
+    /*font-weight: normal;*/
+    font-size: 3em;
+  }
+
+  .parallux-container {
+    position: relative;
+    /*margin-bottom: 2em;*/
+    /*border-bottom: 1px solid black;*/
+  }
+
+  .parallux-container::after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+
+
+  .parallux-item {
+    backface-visibility: hidden;
+    perspective: preserve-3d;
+
+  }
+
+
+  .grid-item{
+    display: block;
+    float: left;
+    width: 33%;
+    border: 1px solid black;
+    height: 300px;
+    background-color: red;
+    margin-bottom: 1em;
+  }
+
+  .overflow-hidden {
+    /*height: 600px;*/
+    overflow: hidden;
+  }
+
+  .clearfix::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  .block{
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .block::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+
+  .left {
+    float: left;
+    width: 50%;
+    padding: 4%;
+
+  }
+
+  .right {
+    float: right;
+    width: 50%;
+    padding: 4%;
+  }
+
+  footer{
+    padding-top: 3em;
+    padding-bottom: 3em;
+  }
+
+  section{
+    /*height: 100%;*/
+    padding-top: 3em;
+    padding-bottom: 3em;
+
+    margin-bottom: 2em;
+  }
+
+  .blue{
+    /*background-color: #53b2e5;*/
+  }
+
+  .dark {
+    /*background-color: #31343c;*/
+  }
+
+  .orange {
+   /*background-color: #e26a6a;*/
+  }
+
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div style="height:500px"></div>
+
+    <div class="section block">
+      <div class="parallux-container">
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2" data-parallux-max=""></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.4" data-parallux-offset="40" data-parallux-max=""></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.5" data-parallux-offset="10" data-parallux-max=""></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.4" data-parallux-max=""></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.6" data-parallux-max=""></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.7" data-parallux-max=""></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.8" data-parallux-max=""></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.6" data-parallux-max=""></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.5" data-parallux-max=""></div>
+      </div>
+    </div>
+
+    <div class="section block">
+      <div class="parallux-container">
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.4"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.8"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      </div>
+    </div>
+
+
+    <div class="section block">
+      <div class="parallux-container">
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      </div>
+    </div>
+
+  </div>
+  <script src="../dist/parallux.min.js"></script>
+  <script>
+  var elems = document.querySelectorAll('.parallux-container');
+
+
+  for (var i = 0, l = elems.length; i < l; i++) {
+
+    new Parallux(elems[i]);
+  }
+  </script>
+</body>
+
+</html>

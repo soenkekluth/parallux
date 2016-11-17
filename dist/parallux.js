@@ -54,8 +54,9 @@ var Parallux = function () {
       this.onResize = this.onResize.bind(this);
 
       var children = typeof this.options.items === 'string' ? this.elem.querySelectorAll(this.options.items) : this.options.items;
+      this.numElements = children.length;
 
-      for (var i = 0, l = children.length; i < l; i++) {
+      for (var i = 0; i < this.numElements; i++) {
         this.elements[i] = new ParalluxItem(children[i]);
       }
 
@@ -75,7 +76,7 @@ var Parallux = function () {
   }, {
     key: 'cachePosition',
     value: function cachePosition() {
-      for (var i = 0, l = this.elements.length; i < l; i++) {
+      for (var i = 0; i < this.numElements; i++) {
         var el = this.elements[i];
         el.cachePosition(this.lazyView.position.bottom);
       }
@@ -114,12 +115,10 @@ var Parallux = function () {
       // const diff = (this.lazyView.position.bottom - this.scroll.y);
       var diff = this.scroll.y - this.lazyView.position.bottom;
 
-      for (var i = 0, l = this.elements.length; i < l; i++) {
-        var elem = this.elements[i];
-        // elem.y = (elem.offset + diff) * elem.ratio;
-        // elem.y = (diff * elem.ratio) + elem.offset;
-        // elem.y = (diff * elem.ratio - elem.offset * elem.ratio);
-        elem.y = diff;
+      for (var i = 0; i < this.numElements; i++) {
+        this.elements[i].y = diff;
+        // const elem = this.elements[i];
+        // elem.y = diff;
       };
     }
   }, {
@@ -130,10 +129,10 @@ var Parallux = function () {
       this.onScroll = null;
       this.onResize = null;
       this.elem = null;
-      for (var i = 0, l = this.elements.length; i < l; i++) {
+      for (var i = 0; i < this.numElements; i++) {
         this.elements[i].destroy();
       }
-      this.elements.length = 0;
+      this.numElements = this.elements.length = 0;
     }
   }, {
     key: 'onResize',

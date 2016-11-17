@@ -30,8 +30,9 @@ export default class Parallux {
     this.onResize = this.onResize.bind(this);
 
     var children = (typeof this.options.items === 'string') ? this.elem.querySelectorAll(this.options.items) : this.options.items;
+    this.numElements = children.length;
 
-    for (let i = 0, l = children.length; i < l; i++) {
+    for (let i = 0; i < this.numElements; i++) {
       this.elements[i] = new ParalluxItem(children[i]);
     }
 
@@ -51,7 +52,7 @@ export default class Parallux {
 
 
   cachePosition(){
-    for (let i = 0, l = this.elements.length; i < l; i++) {
+    for (let i = 0; i < this.numElements; i++) {
       const el = this.elements[i];
       el.cachePosition(this.lazyView.position.bottom);
     }
@@ -87,12 +88,10 @@ export default class Parallux {
     // const diff = (this.lazyView.position.bottom - this.scroll.y);
     const diff = (this.scroll.y - this.lazyView.position.bottom)
 
-    for (let i = 0, l = this.elements.length; i < l; i++) {
-      const elem = this.elements[i];
-      // elem.y = (elem.offset + diff) * elem.ratio;
-      // elem.y = (diff * elem.ratio) + elem.offset;
-      // elem.y = (diff * elem.ratio - elem.offset * elem.ratio);
-      elem.y = diff;
+    for (let i = 0; i < this.numElements; i++) {
+      this.elements[i].y = diff;
+      // const elem = this.elements[i];
+      // elem.y = diff;
     };
   }
 
@@ -103,10 +102,10 @@ export default class Parallux {
     this.onScroll = null;
     this.onResize = null;
     this.elem = null;
-    for (let i = 0, l = this.elements.length; i < l; i++) {
+    for (let i = 0; i < this.numElements; i++) {
       this.elements[i].destroy();
     }
-    this.elements.length = 0;
+    this.numElements = this.elements.length = 0;
   }
 
   onResize() {

@@ -1,6 +1,6 @@
 {
   "name": "parallux",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Parallax made right",
   "main": "dist/parallux.js",
   "scripts": {
@@ -43,7 +43,7 @@
     "webpack-dev-server": "1.16.2"
   },
   "dependencies": {
-    "lazyview": "0.4.3",
+    "lazyview": "0.4.4",
     "object-assign": "4.1.0"
   }
 }

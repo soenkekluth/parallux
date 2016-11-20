@@ -1,7 +1,7 @@
 {
   "name": "parallux",
-  "version": "1.1.5",
-  "description": "Parallax made right",
+  "version": "1.1.6",
+  "description": "Parallax made right. High Performant, smooth & jank Free",
   "main": "dist/parallux.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -18,7 +18,15 @@
     "url": "git+https://github.com/soenkekluth/parallux.git"
   },
   "keywords": [
-    "parallax"
+    "parallux",
+    "parallax",
+    "scroll",
+    "animation",
+    "tween",
+    "skrollr",
+    "scroll magic",
+    "performant",
+    "jank free"
   ],
   "author": "Sönke Kluth <soenke.kluth@gmail.com> (http://soenkekluth.com/)",
   "license": "MIT",

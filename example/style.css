@@ -166,7 +166,9 @@ img {
 
 footer{
   padding-top: 3em;
-  padding-bottom: 3em;
+
+
+  height: 200%;
 }
 
 section{
@@ -196,15 +198,15 @@ section{
 
 .blue{
   // background-color: #53b2e5;
- background-color: rgba(83, 178, 229, 0.1);
+ // background-color: rgba(83, 178, 229, 0.1);
 }
 
 .dark {
   // background-color: #31343c;
-  background-color: rgba(49, 52, 60, 0.1)
+  // background-color: rgba(49, 52, 60, 0.1)
 }
 
 .orange {
  // background-color: #e26a6a;
- background-color: rgba(226, 106, 106, 0.1);
+ // background-color: rgba(226, 106, 106, 0.1);
 }

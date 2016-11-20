@@ -1,6 +1,6 @@
 {
   "name": "parallux",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Parallax made right",
   "main": "dist/parallux.js",
   "scripts": {
@@ -29,7 +29,7 @@
   "devDependencies": {
     "babel-cli": "6.18.0",
     "babel-core": "6.18.2",
-    "babel-loader": "6.2.7",
+    "babel-loader": "6.2.8",
     "babel-plugin-add-module-exports": "0.2.1",
     "babel-plugin-transform-class-constructor-call": "6.18.0",
     "babel-plugin-transform-class-properties": "6.19.0",
@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "lazyview": "0.4.4",
-    "object-assign": "4.1.0"
+    "object-assign": "4.1.0",
+    "style-prefixer": "1.0.1"
   }
 }

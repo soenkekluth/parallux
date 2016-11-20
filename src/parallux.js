@@ -1,6 +1,6 @@
 import LazyView from 'lazyview';
 import assign from 'object-assign';
-// import Prefixer from 'inline-style-prefixer'
+import { getPrefix } from 'style-prefixer';
 
 const defaults = {
   lazyView: {},
@@ -12,9 +12,9 @@ export default class Parallux {
 
   elements = [];
 
-  constructor(elem, options = {}) {
+  constructor(container, options = {}) {
 
-    this.elem = elem;
+    this.container = container;
     this.options = assign({}, defaults, options);
 
     this.state = {
@@ -27,17 +27,22 @@ export default class Parallux {
   init() {
 
     this.onScroll = this.render.bind(this);
-    this.onResize = this.onResize.bind(this);
+    this.onResize = this.render.bind(this);
 
-    var children = (typeof this.options.items === 'string') ? this.elem.querySelectorAll(this.options.items) : this.options.items;
+    var children = (typeof this.options.items === 'string') ? this.container.querySelectorAll(this.options.items) : this.options.items;
     this.numElements = children.length;
 
+    this.viewPort = {
+      width: window.innerWidth,
+      height: window.innerHeight
+    }
+
     for (let i = 0; i < this.numElements; i++) {
-      this.elements[i] = new ParalluxItem(children[i]);
+      this.elements[i] = new ParalluxItem(children[i], this.viewPort);
     }
 
     this.initialRender = true;
-    this.lazyView = new LazyView(this.elem, this.options.lazyView);
+    this.lazyView = new LazyView(this.container, this.options.lazyView);
     this.scroll = this.lazyView.scroll;
 
     this.lazyView.on('enter', this.startRender.bind(this));
@@ -51,7 +56,7 @@ export default class Parallux {
   }
 
 
-  cachePosition(){
+  cachePosition() {
     for (let i = 0; i < this.numElements; i++) {
       const el = this.elements[i];
       el.cachePosition(this.lazyView.position.bottom);
@@ -60,11 +65,11 @@ export default class Parallux {
 
   startRender() {
     if (!this.state.rendering) {
-      if(this.initialRender){
+      if (this.initialRender) {
         this.initialRender = false;
         this.cachePosition();
       }
-      // this.prefixer = new Prefixer();
+      this.preRender();
       this.state.rendering = true;
       this.scroll.on('scroll:start', this.onScroll);
       this.scroll.on('scroll:progress', this.onScroll);
@@ -81,17 +86,27 @@ export default class Parallux {
       this.scroll.off('scroll:progress', this.onScroll);
       this.scroll.off('scroll:stop', this.onScroll);
       this.scroll.off('scroll:resize', this.onResize);
+      this.postRender();
     }
   }
 
-  render() {
-    // const diff = (this.lazyView.position.bottom - this.scroll.y);
-    const diff = (this.scroll.y - this.lazyView.position.bottom)
-
+  preRender() {
     for (let i = 0; i < this.numElements; i++) {
-      this.elements[i].y = diff;
-      // const elem = this.elements[i];
-      // elem.y = diff;
+      this.elements[i].setWillChange();
+    };
+  }
+
+  postRender() {
+    for (let i = 0; i < this.numElements; i++) {
+      this.elements[i].setStyle(getPrefix('willChange'), null);
+    };
+  }
+
+  render() {
+    const diff = (this.lazyView.position.bottom - this.scroll.y);
+    var percent = (this.scroll.clientHeight - diff) / this.scroll.clientHeight;
+    for (let i = 0; i < this.numElements; i++) {
+      this.elements[i].setState(diff, percent);
     };
   }
 
@@ -107,82 +122,106 @@ export default class Parallux {
     }
     this.numElements = this.elements.length = 0;
   }
-
-  onResize() {
-
-  }
 }
 
 
 
 class ParalluxItem {
 
-  constructor(elem, options = {}) {
+  constructor(node, viewPort, options = {}) {
 
-    this.elem = elem;
+    this.node = node;
+    this.viewPort = viewPort;
     this.options = options;
-    this._y = 0;
-    this._lastY = 0;
 
-    this.ratio = parseFloat(elem.dataset.paralluxRatio) || 0;
-    this.ratioUp = parseFloat(elem.dataset.paralluxRatioUp) || this.ratio;
-    this.offset = parseFloat(elem.dataset.paralluxOffset) || 0;
-    this.max = parseFloat(elem.dataset.paralluxMax);
+    this.state = {
+      y: 0,
+      percent: 0
+    }
 
-    if(!isNaN(this.max)){
+
+    const attr = node.dataset.paralluxAttr;
+    this.attr = attr ? JSON.parse(attr) : null;
+    this.ratio = parseFloat(node.dataset.paralluxRatio) || 0;
+    this.ratioUp = parseFloat(node.dataset.paralluxRatioUp) || this.ratio;
+    this.offset = parseFloat(node.dataset.paralluxOffset) || 0;
+    this.max = parseFloat(node.dataset.paralluxMax);
+
+    if (!isNaN(this.max)) {
       this.processValue = this.processMaxValue.bind(this);
-    }else{
+    } else {
       this.processValue = this.processNullValue.bind(this);
     }
   }
 
 
-  processNullValue(value){
+  processNullValue(value) {
     return value;
   }
 
-  processMaxValue(value){
-    if(value < this.max){
+  processMaxValue(value) {
+    if (value < this.max) {
       return this.max;
     }
     return value;
   }
 
   cachePosition(offset = 0) {
-    var rect =  this.elem.getBoundingClientRect();
+    var rect = this.node.getBoundingClientRect();
     this.position = {
-      top : rect.top - offset,
-      bottom : rect.bottom - offset
+      top: rect.top - offset,
+      bottom: rect.bottom - offset
     }
-    // console.log(this.position);
   }
 
+  setWillChange() {
+    let styles = this.attr ? Object.keys(this.attr) : [];
+    if (styles.indexOf('transform') === -1) {
+      styles.unshift('transform');
+    }
+    for (let i = 0, l = styles.length; i < l; i++) {
+      styles[i] = getPrefix(styles[i]);
+    }
+    this.setStyle(getPrefix('willChange'), styles.join(','));
+  }
+
+  setState(y, percent) {
+    if (y < 0) {
+      y = ((this.offset + y) * this.ratioUp) - (this.offset * this.ratioUp);
+    } else {
+      y = ((this.offset + y) * this.ratio) - (this.offset * this.ratio)
+    }
+    if (this.state.y !== y) {
+      this.state.y = y;
+      this.state.percent = percent;
+      this.render();
+    }
+  }
 
   render() {
-    this.elem.style.cssText = 'transform: translateY(' + this._y + 'px)';
-    // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
+    var transform = 'translateY(' + this.state.y + 'px)';
+    if (this.attr) {
+      Object.keys(this.attr).forEach(key => {
+        var unit = this.attr[key].unit || '';
+        var value = (this.attr[key].from - (this.attr[key].from - this.attr[key].to) * this.state.percent) + unit;
+        if (key === 'transform') {
+          transform += ' ' + this.attr[key].prop + '(' + value + ')';
+        } else {
+          this.node.style[getPrefix(key)] = value;
+        }
+      });
+
+    }
+    this.node.style[getPrefix('transform')] = transform;
+  }
+
+  setStyle(prop, value) {
+    this.node.style[getPrefix(prop)] = value;
   }
 
   destroy() {
-    this.elem = null;
+    this.node = null;
     this.options = null;
-  }
-
-  set y(value) {
-
-    value = this.processValue(value);
-    this._y = ((this.offset + value) * this.ratio) - (this.offset * this.ratio);
-    if(this._y < 0){
-      this._y = ((this.offset + value) * this.ratioUp) - (this.offset * this.ratioUp);
-    }
-    if(this._lastY !== this._y){
-      this.render();
-    }
-    this._lastY = this._y;
-  }
-
-  get y() {
-    return this._y;
   }
 
 }

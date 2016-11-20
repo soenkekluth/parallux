@@ -14,11 +14,11 @@ var _objectAssign = require('object-assign');
 
 var _objectAssign2 = _interopRequireDefault(_objectAssign);
 
+var _stylePrefixer = require('style-prefixer');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-// import Prefixer from 'inline-style-prefixer'
 
 var defaults = {
   lazyView: {},
@@ -27,7 +27,7 @@ var defaults = {
 };
 
 var Parallux = function () {
-  function Parallux(elem) {
+  function Parallux(container) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     _classCallCheck(this, Parallux);
@@ -35,7 +35,7 @@ var Parallux = function () {
     this.elements = [];
 
 
-    this.elem = elem;
+    this.container = container;
     this.options = (0, _objectAssign2.default)({}, defaults, options);
 
     this.state = {
@@ -51,17 +51,22 @@ var Parallux = function () {
       var _this = this;
 
       this.onScroll = this.render.bind(this);
-      this.onResize = this.onResize.bind(this);
+      this.onResize = this.render.bind(this);
 
-      var children = typeof this.options.items === 'string' ? this.elem.querySelectorAll(this.options.items) : this.options.items;
+      var children = typeof this.options.items === 'string' ? this.container.querySelectorAll(this.options.items) : this.options.items;
       this.numElements = children.length;
 
+      this.viewPort = {
+        width: window.innerWidth,
+        height: window.innerHeight
+      };
+
       for (var i = 0; i < this.numElements; i++) {
-        this.elements[i] = new ParalluxItem(children[i]);
+        this.elements[i] = new ParalluxItem(children[i], this.viewPort);
       }
 
       this.initialRender = true;
-      this.lazyView = new _lazyview2.default(this.elem, this.options.lazyView);
+      this.lazyView = new _lazyview2.default(this.container, this.options.lazyView);
       this.scroll = this.lazyView.scroll;
 
       this.lazyView.on('enter', this.startRender.bind(this));
@@ -89,7 +94,7 @@ var Parallux = function () {
           this.initialRender = false;
           this.cachePosition();
         }
-        // this.prefixer = new Prefixer();
+        this.preRender();
         this.state.rendering = true;
         this.scroll.on('scroll:start', this.onScroll);
         this.scroll.on('scroll:progress', this.onScroll);
@@ -107,18 +112,30 @@ var Parallux = function () {
         this.scroll.off('scroll:progress', this.onScroll);
         this.scroll.off('scroll:stop', this.onScroll);
         this.scroll.off('scroll:resize', this.onResize);
+        this.postRender();
       }
+    }
+  }, {
+    key: 'preRender',
+    value: function preRender() {
+      for (var i = 0; i < this.numElements; i++) {
+        this.elements[i].setWillChange();
+      };
+    }
+  }, {
+    key: 'postRender',
+    value: function postRender() {
+      for (var i = 0; i < this.numElements; i++) {
+        this.elements[i].setStyle((0, _stylePrefixer.getPrefix)('willChange'), null);
+      };
     }
   }, {
     key: 'render',
     value: function render() {
-      // const diff = (this.lazyView.position.bottom - this.scroll.y);
-      var diff = this.scroll.y - this.lazyView.position.bottom;
-
+      var diff = this.lazyView.position.bottom - this.scroll.y;
+      var percent = (this.scroll.clientHeight - diff) / this.scroll.clientHeight;
       for (var i = 0; i < this.numElements; i++) {
-        this.elements[i].y = diff;
-        // const elem = this.elements[i];
-        // elem.y = diff;
+        this.elements[i].setState(diff, percent);
       };
     }
   }, {
@@ -134,9 +151,6 @@ var Parallux = function () {
       }
       this.numElements = this.elements.length = 0;
     }
-  }, {
-    key: 'onResize',
-    value: function onResize() {}
   }]);
 
   return Parallux;
@@ -145,20 +159,26 @@ var Parallux = function () {
 exports.default = Parallux;
 
 var ParalluxItem = function () {
-  function ParalluxItem(elem) {
-    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  function ParalluxItem(node, viewPort) {
+    var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
     _classCallCheck(this, ParalluxItem);
 
-    this.elem = elem;
+    this.node = node;
+    this.viewPort = viewPort;
     this.options = options;
-    this._y = 0;
-    this._lastY = 0;
 
-    this.ratio = parseFloat(elem.dataset.paralluxRatio) || 0;
-    this.ratioUp = parseFloat(elem.dataset.paralluxRatioUp) || this.ratio;
-    this.offset = parseFloat(elem.dataset.paralluxOffset) || 0;
-    this.max = parseFloat(elem.dataset.paralluxMax);
+    this.state = {
+      y: 0,
+      percent: 0
+    };
+
+    var attr = node.dataset.paralluxAttr;
+    this.attr = attr ? JSON.parse(attr) : null;
+    this.ratio = parseFloat(node.dataset.paralluxRatio) || 0;
+    this.ratioUp = parseFloat(node.dataset.paralluxRatioUp) || this.ratio;
+    this.offset = parseFloat(node.dataset.paralluxOffset) || 0;
+    this.max = parseFloat(node.dataset.paralluxMax);
 
     if (!isNaN(this.max)) {
       this.processValue = this.processMaxValue.bind(this);
@@ -185,41 +205,67 @@ var ParalluxItem = function () {
     value: function cachePosition() {
       var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
 
-      var rect = this.elem.getBoundingClientRect();
+      var rect = this.node.getBoundingClientRect();
       this.position = {
         top: rect.top - offset,
         bottom: rect.bottom - offset
       };
-      // console.log(this.position);
+    }
+  }, {
+    key: 'setWillChange',
+    value: function setWillChange() {
+      var styles = this.attr ? Object.keys(this.attr) : [];
+      if (styles.indexOf('transform') === -1) {
+        styles.unshift('transform');
+      }
+      for (var i = 0, l = styles.length; i < l; i++) {
+        styles[i] = (0, _stylePrefixer.getPrefix)(styles[i]);
+      }
+      this.setStyle((0, _stylePrefixer.getPrefix)('willChange'), styles.join(','));
+    }
+  }, {
+    key: 'setState',
+    value: function setState(y, percent) {
+      if (y < 0) {
+        y = (this.offset + y) * this.ratioUp - this.offset * this.ratioUp;
+      } else {
+        y = (this.offset + y) * this.ratio - this.offset * this.ratio;
+      }
+      if (this.state.y !== y) {
+        this.state.y = y;
+        this.state.percent = percent;
+        this.render();
+      }
     }
   }, {
     key: 'render',
     value: function render() {
-      this.elem.style.cssText = 'transform: translateY(' + this._y + 'px)';
-      // elem.style.cssText = 'transform: translate3d(0px, '+y+'px, 0px)';
+      var _this2 = this;
+
+      var transform = 'translateY(' + this.state.y + 'px)';
+      if (this.attr) {
+        Object.keys(this.attr).forEach(function (key) {
+          var unit = _this2.attr[key].unit || '';
+          var value = _this2.attr[key].from - (_this2.attr[key].from - _this2.attr[key].to) * _this2.state.percent + unit;
+          if (key === 'transform') {
+            transform += ' ' + _this2.attr[key].prop + '(' + value + ')';
+          } else {
+            _this2.node.style[(0, _stylePrefixer.getPrefix)(key)] = value;
+          }
+        });
+      }
+      this.node.style[(0, _stylePrefixer.getPrefix)('transform')] = transform;
+    }
+  }, {
+    key: 'setStyle',
+    value: function setStyle(prop, value) {
+      this.node.style[(0, _stylePrefixer.getPrefix)(prop)] = value;
     }
   }, {
     key: 'destroy',
     value: function destroy() {
-      this.elem = null;
+      this.node = null;
       this.options = null;
-    }
-  }, {
-    key: 'y',
-    set: function set(value) {
-
-      value = this.processValue(value);
-      this._y = (this.offset + value) * this.ratio - this.offset * this.ratio;
-      if (this._y < 0) {
-        this._y = (this.offset + value) * this.ratioUp - this.offset * this.ratioUp;
-      }
-      if (this._lastY !== this._y) {
-        this.render();
-      }
-      this._lastY = this._y;
-    },
-    get: function get() {
-      return this._y;
     }
   }]);
 

@@ -23,7 +23,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var defaults = {
   lazyView: {},
   container: '.parallux-container',
-  items: '.parallux-item'
+  items: '.parallux-item',
+  pov: 0.5
 };
 
 var Parallux = function () {
@@ -37,6 +38,7 @@ var Parallux = function () {
 
     this.container = container;
     this.options = (0, _objectAssign2.default)({}, defaults, options);
+    this.options.pov = this.container.getAttribute('data-parallux-pov') || this.options.pov;
 
     this.state = {
       rendering: false
@@ -48,7 +50,6 @@ var Parallux = function () {
   _createClass(Parallux, [{
     key: 'init',
     value: function init() {
-      var _this = this;
 
       this.onScroll = this.render.bind(this);
       this.onResize = this.render.bind(this);
@@ -71,15 +72,6 @@ var Parallux = function () {
 
       this.lazyView.on('enter', this.startRender.bind(this));
       this.lazyView.on('exit', this.stopRender.bind(this));
-
-      var onLoad = function onLoad() {
-        window.removeEventListener('load', onLoad);
-        if (_this.state.rendering) {
-          _this.render();
-        }
-      };
-
-      window.addEventListener('load', onLoad, false);
     }
   }, {
     key: 'cachePosition',
@@ -96,7 +88,7 @@ var Parallux = function () {
       if (!this.state.rendering) {
         if (this.initialRender) {
           this.initialRender = false;
-          // this.cachePosition();
+          this.cachePosition();
         }
         this.preRender();
         this.state.rendering = true;
@@ -136,7 +128,7 @@ var Parallux = function () {
   }, {
     key: 'render',
     value: function render() {
-      var hdiff = (this.scroll.clientHeight - this.lazyView.position.height) / 2;
+      var hdiff = (this.scroll.clientHeight - this.lazyView.position.height) * this.options.pov;
       var diff = this.lazyView.position.bottom - hdiff - this.scroll.y;
       var percent = (this.scroll.clientHeight - diff) / this.scroll.clientHeight;
       for (var i = 0; i < this.numElements; i++) {
@@ -257,17 +249,17 @@ var ParalluxItem = function () {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this = this;
 
       var transform = 'translateY(' + this.state.y + 'px)';
       if (this.attr) {
         Object.keys(this.attr).forEach(function (key) {
           if (key === 'transform') {
-            Object.keys(_this2.attr[key]).forEach(function (tans) {
-              transform += ' ' + tans + '(' + _this2.getStyle(_this2.attr[key][tans]) + ')';
+            Object.keys(_this.attr[key]).forEach(function (tans) {
+              transform += ' ' + tans + '(' + _this.getStyle(_this.attr[key][tans]) + ')';
             });
           } else {
-            _this2.node.style[(0, _stylePrefixer.getPrefix)(key)] = _this2.getStyle(_this2.attr[key]);
+            _this.node.style[(0, _stylePrefixer.getPrefix)(key)] = _this.getStyle(_this.attr[key]);
           }
         });
       }

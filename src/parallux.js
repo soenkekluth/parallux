@@ -5,7 +5,8 @@ import { getPrefix } from 'style-prefixer';
 const defaults = {
   lazyView: {},
   container: '.parallux-container',
-  items: '.parallux-item'
+  items: '.parallux-item',
+  pov: 0.5
 };
 
 export default class Parallux {
@@ -16,6 +17,7 @@ export default class Parallux {
 
     this.container = container;
     this.options = assign({}, defaults, options);
+    this.options.pov = this.container.getAttribute('data-parallux-pov') || this.options.pov;
 
     this.state = {
       rendering: false
@@ -47,16 +49,6 @@ export default class Parallux {
 
     this.lazyView.on('enter', this.startRender.bind(this));
     this.lazyView.on('exit', this.stopRender.bind(this));
-
-    const onLoad = ()=>{
-      window.removeEventListener('load', onLoad);
-      if (this.state.rendering) {
-        this.render();
-      }
-    }
-
-    window.addEventListener('load', onLoad, false);
-
   }
 
 
@@ -72,7 +64,7 @@ export default class Parallux {
     if (!this.state.rendering) {
       if (this.initialRender) {
         this.initialRender = false;
-        // this.cachePosition();
+        this.cachePosition();
       }
       this.preRender();
       this.state.rendering = true;
@@ -108,7 +100,7 @@ export default class Parallux {
   }
 
   render() {
-    const hdiff = (this.scroll.clientHeight - this.lazyView.position.height)/2;
+    const hdiff = (this.scroll.clientHeight - this.lazyView.position.height) * this.options.pov;
     const diff = (this.lazyView.position.bottom - hdiff - this.scroll.y);
     var percent = (this.scroll.clientHeight - diff) / this.scroll.clientHeight;
     for (let i = 0; i < this.numElements; i++) {

@@ -142,13 +142,12 @@ class ParalluxItem {
       percent: 0
     }
 
-
-    const attr = node.dataset.paralluxAttr;
+    const attr = node.getAttribute('data-parallux-attr');
     this.attr = attr ? JSON.parse(attr) : null;
-    this.ratio = parseFloat(node.dataset.paralluxRatio) || 0;
-    this.ratioUp = parseFloat(node.dataset.paralluxRatioUp) || this.ratio;
-    this.offset = parseFloat(node.dataset.paralluxOffset) || 0;
-    this.max = parseFloat(node.dataset.paralluxMax);
+    this.ratio = parseFloat(node.getAttribute('data-parallux-ratio')) || 0;
+    this.ratioUp = parseFloat(node.getAttribute('data-parallux-ratio-up')) || this.ratio;
+    this.offset = parseFloat(node.getAttribute('data-parallux-offset')) || 0;
+    this.max = parseFloat(node.getAttribute('data-parallux-max'));
 
     if (!isNaN(this.max)) {
       this.processValue = this.processMaxValue.bind(this);

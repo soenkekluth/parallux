@@ -24,6 +24,7 @@ var defaults = {
   lazyView: {},
   container: '.parallux-container',
   items: '.parallux-item',
+  relative: true,
   pov: 0.5
 };
 
@@ -39,7 +40,7 @@ var Parallux = function () {
     this.container = container;
     this.options = (0, _objectAssign2.default)({}, defaults, options);
     this.options.pov = this.container.getAttribute('data-parallux-pov') || this.options.pov;
-
+    this.options.relative = !!this.container.getAttribute('data-parallux-relative');
     this.state = {
       rendering: false
     };
@@ -78,7 +79,7 @@ var Parallux = function () {
     value: function cachePosition() {
       for (var i = 0; i < this.numElements; i++) {
         var el = this.elements[i];
-        el.cachePosition(this.lazyView.position.bottom);
+        el.cachePosition(this.lazyView.position.bottom - this.scroll.y);
       }
     }
   }, {
@@ -132,7 +133,9 @@ var Parallux = function () {
       var diff = this.lazyView.position.bottom - hdiff - this.scroll.y;
       var percent = (this.scroll.clientHeight - diff) / this.scroll.clientHeight;
       for (var i = 0; i < this.numElements; i++) {
-        this.elements[i].setState(diff, percent);
+        var top = !this.options.relative ? this.elements[i].position.top : 0;
+        var y = this.elements[i].offset + diff + top;
+        this.elements[i].setState(y, percent);
       };
     }
   }, {
@@ -223,11 +226,13 @@ var ParalluxItem = function () {
   }, {
     key: 'setState',
     value: function setState(y, percent) {
+
       if (y < 0) {
-        y = (this.offset + y) * this.ratioUp - this.offset * this.ratioUp;
+        y *= this.ratioUp /*- (this.offset * this.ratioUp)*/;
       } else {
-        y = (this.offset + y) * this.ratio - this.offset * this.ratio;
+        y *= this.ratio; /* - (this.offset * this.ratio)*/
       }
+
       if (this.state.y !== y) {
         this.state.y = y;
         this.state.percent = percent;

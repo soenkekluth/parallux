@@ -37,22 +37,26 @@ export default class Parallux {
       height: window.innerHeight
     }
 
-    for (let i = 0; i < this.numElements; i++) {
-      this.elements[i] = new ParalluxItem(children[i], this.viewPort);
-    }
-
     this.initialRender = true;
     this.lazyView = new LazyView(this.container, this.options.lazyView);
     this.scroll = this.lazyView.scroll;
 
+    for (let i = 0; i < this.numElements; i++) {
+      this.elements[i] = new ParalluxItem(children[i], this.viewPort);
+    }
+
     this.lazyView.on('enter', this.startRender.bind(this));
     this.lazyView.on('exit', this.stopRender.bind(this));
 
-    setTimeout(() => {
-      if (this.lazyView.state.inView) {
-        this.startRender();
+    const onLoad = ()=>{
+      window.removeEventListener('load', onLoad);
+      if (this.state.rendering) {
+        this.render();
       }
-    }, 10)
+    }
+
+    window.addEventListener('load', onLoad, false);
+
   }
 
 
@@ -64,10 +68,11 @@ export default class Parallux {
   }
 
   startRender() {
+
     if (!this.state.rendering) {
       if (this.initialRender) {
         this.initialRender = false;
-        this.cachePosition();
+        // this.cachePosition();
       }
       this.preRender();
       this.state.rendering = true;
@@ -105,9 +110,7 @@ export default class Parallux {
   render() {
     const hdiff = (this.scroll.clientHeight - this.lazyView.position.height)/2;
     const diff = (this.lazyView.position.bottom - hdiff - this.scroll.y);
-    // console.log((this.scroll.clientHeight - diff)/ this.scroll.clientHeight );
     var percent = (this.scroll.clientHeight - diff) / this.scroll.clientHeight;
-    // var percent = diff/hdiff;
     for (let i = 0; i < this.numElements; i++) {
       this.elements[i].setState(diff, percent);
     };

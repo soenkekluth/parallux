@@ -94,23 +94,23 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
 
 }
 
-.header .block {
-  padding-top: 15%;
+.header {
+  padding-top: 6%;
   line-height: 2;
-  font-size: 120%;
 }
 
-.header .block h1 {
-  /*margin: 0;*/
+.header h1 {
+  margin: 0;
   text-transform: uppercase;
+  text-align: center;
+  display: block;
   /*font-weight: normal;*/
-  font-size: 3em;
+  font-size: 17vw;
 }
 
 .parallux-container {
   position: relative;
 
-  margin-bottom: 2em;
   -webkit-perspective: 500px;
      -moz-perspective: 500px;
           perspective: 500px;
@@ -156,7 +156,6 @@ img {
   float: left;
   width: 50%;
   padding: 2%;
-
 }
 
 .right {
@@ -172,20 +171,40 @@ footer{
 
 section{
   /*height: 100%;*/
-  padding-top: 3em;
-  padding-bottom: 3em;
+  padding-top: 6%;
+  padding-bottom: 6%;
+
 
   /*margin-bottom: 2em;*/
 }
 
+@media screen and (max-width: 580px){
+  .left {
+    float: none;
+    display: block;
+    width: 100%;
+    padding: 2%;
+  }
+
+  .right {
+    float: none;
+        display: block;
+        width: 100%;
+    padding: 2%;
+  }
+}
+
 .blue{
-  /*background-color: #53b2e5;*/
+  // background-color: #53b2e5;
+ background-color: rgba(83, 178, 229, 0.1);
 }
 
 .dark {
-  /*background-color: #31343c;*/
+  // background-color: #31343c;
+  background-color: rgba(49, 52, 60, 0.1)
 }
 
 .orange {
- /*background-color: #e26a6a;*/
+ // background-color: #e26a6a;
+ background-color: rgba(226, 106, 106, 0.1);
 }

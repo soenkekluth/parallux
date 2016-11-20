@@ -132,8 +132,11 @@ var Parallux = function () {
   }, {
     key: 'render',
     value: function render() {
-      var diff = this.lazyView.position.bottom - this.scroll.y;
+      var hdiff = (this.scroll.clientHeight - this.lazyView.position.height) / 2;
+      var diff = this.lazyView.position.bottom - hdiff - this.scroll.y;
+      // console.log((this.scroll.clientHeight - diff)/ this.scroll.clientHeight );
       var percent = (this.scroll.clientHeight - diff) / this.scroll.clientHeight;
+      // var percent = diff/hdiff;
       for (var i = 0; i < this.numElements; i++) {
         this.elements[i].setState(diff, percent);
       };
@@ -241,8 +244,13 @@ var ParalluxItem = function () {
     key: 'getStyle',
     value: function getStyle(entry) {
       var unit = entry.unit || '';
-      var value = entry.from - (entry.from - entry.to) * this.state.percent + unit;
-      return value;
+      var to = entry.to || 0;
+      var diff = entry.from - to;
+      var value = entry.from - diff * this.state.percent;
+      if (entry.hasOwnProperty('to') && (diff < 0 && value > to || diff > 0 && value < to)) {
+        value = to;
+      }
+      return value + unit;
     }
   }, {
     key: 'render',

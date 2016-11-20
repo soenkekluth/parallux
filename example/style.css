@@ -79,17 +79,17 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, 
   position: relative;
 
   margin-bottom: 2em;
-  perspective: 400px;
+  -webkit-perspective: 500px;
+     -moz-perspective: 500px;
+          perspective: 500px;
 
-  /*border-top: 1px solid red;*/
-  /*border-bottom: 1px solid red;*/
 }
 
 .parallux-item {
   -webkit-backface-visibility: hidden;
      -moz-backface-visibility: hidden;
           backface-visibility: hidden;
-  /*perspective: preserve-3d;*/
+  perspective: preserve-3d;
 
 }
 

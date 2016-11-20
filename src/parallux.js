@@ -198,19 +198,25 @@ class ParalluxItem {
     }
   }
 
+
+  getStyle(entry){
+    var unit = entry.unit || '';
+    var value = (entry.from - (entry.from - entry.to) * this.state.percent) + unit;
+    return value;
+  }
+
   render() {
     var transform = 'translateY(' + this.state.y + 'px)';
     if (this.attr) {
       Object.keys(this.attr).forEach(key => {
-        var unit = this.attr[key].unit || '';
-        var value = (this.attr[key].from - (this.attr[key].from - this.attr[key].to) * this.state.percent) + unit;
         if (key === 'transform') {
-          transform += ' ' + this.attr[key].prop + '(' + value + ')';
+          Object.keys(this.attr[key]).forEach(tans => {
+            transform += ' ' + tans + '(' + this.getStyle(this.attr[key][tans]) + ')';
+          });
         } else {
-          this.node.style[getPrefix(key)] = value;
+          this.node.style[getPrefix(key)] = this.getStyle(this.attr[key]);
         }
       });
-
     }
     this.node.style[getPrefix('transform')] = transform;
   }

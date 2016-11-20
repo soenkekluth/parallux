@@ -238,6 +238,13 @@ var ParalluxItem = function () {
       }
     }
   }, {
+    key: 'getStyle',
+    value: function getStyle(entry) {
+      var unit = entry.unit || '';
+      var value = entry.from - (entry.from - entry.to) * this.state.percent + unit;
+      return value;
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
@@ -245,12 +252,12 @@ var ParalluxItem = function () {
       var transform = 'translateY(' + this.state.y + 'px)';
       if (this.attr) {
         Object.keys(this.attr).forEach(function (key) {
-          var unit = _this2.attr[key].unit || '';
-          var value = _this2.attr[key].from - (_this2.attr[key].from - _this2.attr[key].to) * _this2.state.percent + unit;
           if (key === 'transform') {
-            transform += ' ' + _this2.attr[key].prop + '(' + value + ')';
+            Object.keys(_this2.attr[key]).forEach(function (tans) {
+              transform += ' ' + tans + '(' + _this2.getStyle(_this2.attr[key][tans]) + ')';
+            });
           } else {
-            _this2.node.style[(0, _stylePrefixer.getPrefix)(key)] = value;
+            _this2.node.style[(0, _stylePrefixer.getPrefix)(key)] = _this2.getStyle(_this2.attr[key]);
           }
         });
       }

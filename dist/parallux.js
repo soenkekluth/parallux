@@ -58,14 +58,8 @@ var Parallux = function () {
       var children = typeof this.options.items === 'string' ? this.container.querySelectorAll(this.options.items) : this.options.items;
       this.numElements = children.length;
 
-      this.viewPort = {
-        width: window.innerWidth,
-        height: window.innerHeight
-      };
-
       this.initialRender = true;
       this.lazyView = new _lazyview2.default(this.container, this.options.lazyView);
-      this.scroll = this.lazyView.scroll;
 
       for (var i = 0; i < this.numElements; i++) {
         this.elements[i] = new ParalluxItem(children[i], this.viewPort);
@@ -88,6 +82,11 @@ var Parallux = function () {
 
       if (!this.state.rendering) {
         if (this.initialRender) {
+          this.scroll = this.lazyView.scroll;
+          this.viewPort = {
+            width: this.scroll.clientWidth,
+            height: this.scroll.clientHeight
+          };
           this.initialRender = false;
           this.cachePosition();
         }

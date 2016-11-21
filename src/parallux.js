@@ -35,14 +35,9 @@ export default class Parallux {
     var children = (typeof this.options.items === 'string') ? this.container.querySelectorAll(this.options.items) : this.options.items;
     this.numElements = children.length;
 
-    this.viewPort = {
-      width: window.innerWidth,
-      height: window.innerHeight
-    }
-
     this.initialRender = true;
     this.lazyView = new LazyView(this.container, this.options.lazyView);
-    this.scroll = this.lazyView.scroll;
+
 
     for (let i = 0; i < this.numElements; i++) {
       this.elements[i] = new ParalluxItem(children[i], this.viewPort);
@@ -64,6 +59,11 @@ export default class Parallux {
 
     if (!this.state.rendering) {
       if (this.initialRender) {
+        this.scroll = this.lazyView.scroll;
+        this.viewPort = {
+          width: this.scroll.clientWidth,
+          height: this.scroll.clientHeight
+        }
         this.initialRender = false;
         this.cachePosition();
       }

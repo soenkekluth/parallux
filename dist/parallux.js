@@ -41,6 +41,7 @@ var Parallux = function () {
     this.options = (0, _objectAssign2.default)({}, defaults, options);
     this.options.pov = this.container.getAttribute('data-parallux-pov') || this.options.pov;
     this.options.relative = !!this.container.getAttribute('data-parallux-relative');
+
     this.state = {
       rendering: false
     };
@@ -60,6 +61,12 @@ var Parallux = function () {
 
       this.initialRender = true;
       this.lazyView = new _lazyview2.default(this.container, this.options.lazyView);
+      this.scroll = this.lazyView.scroll;
+
+      this.viewPort = {
+        width: this.scroll.clientWidth,
+        height: this.scroll.clientHeight
+      };
 
       for (var i = 0; i < this.numElements; i++) {
         this.elements[i] = new ParalluxItem(children[i], this.viewPort);
@@ -82,11 +89,7 @@ var Parallux = function () {
 
       if (!this.state.rendering) {
         if (this.initialRender) {
-          this.scroll = this.lazyView.scroll;
-          this.viewPort = {
-            width: this.scroll.clientWidth,
-            height: this.scroll.clientHeight
-          };
+
           this.initialRender = false;
           this.cachePosition();
         }

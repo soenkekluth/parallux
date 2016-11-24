@@ -20,6 +20,7 @@ export default class Parallux {
     this.options = assign({}, defaults, options);
     this.options.pov = this.container.getAttribute('data-parallux-pov') || this.options.pov;
     this.options.relative = !!(this.container.getAttribute('data-parallux-relative'));
+
     this.state = {
       rendering: false
     }
@@ -37,7 +38,12 @@ export default class Parallux {
 
     this.initialRender = true;
     this.lazyView = new LazyView(this.container, this.options.lazyView);
+    this.scroll = this.lazyView.scroll;
 
+    this.viewPort = {
+      width: this.scroll.clientWidth,
+      height: this.scroll.clientHeight
+    }
 
     for (let i = 0; i < this.numElements; i++) {
       this.elements[i] = new ParalluxItem(children[i], this.viewPort);
@@ -49,6 +55,9 @@ export default class Parallux {
 
 
   cachePosition() {
+    this.viewPort.width = this.scroll.clientWidth;
+    this.viewPort.height = this.scroll.clientHeight;
+
     for (let i = 0; i < this.numElements; i++) {
       const el = this.elements[i];
       el.cachePosition(this.lazyView.position.bottom - this.scroll.y);
@@ -59,11 +68,6 @@ export default class Parallux {
 
     if (!this.state.rendering) {
       if (this.initialRender) {
-        this.scroll = this.lazyView.scroll;
-        this.viewPort = {
-          width: this.scroll.clientWidth,
-          height: this.scroll.clientHeight
-        }
         this.initialRender = false;
         this.cachePosition();
       }

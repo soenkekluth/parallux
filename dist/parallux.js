@@ -78,6 +78,9 @@ var Parallux = function () {
   }, {
     key: 'cachePosition',
     value: function cachePosition() {
+      this.viewPort.width = this.scroll.clientWidth;
+      this.viewPort.height = this.scroll.clientHeight;
+
       for (var i = 0; i < this.numElements; i++) {
         var el = this.elements[i];
         el.cachePosition(this.lazyView.position.bottom - this.scroll.y);
@@ -89,7 +92,6 @@ var Parallux = function () {
 
       if (!this.state.rendering) {
         if (this.initialRender) {
-
           this.initialRender = false;
           this.cachePosition();
         }

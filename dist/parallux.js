@@ -46,6 +46,9 @@ var Parallux = function () {
       rendering: false
     };
 
+    this.startRender = this.startRender.bind(this);
+    this.stopRender = this.stopRender.bind(this);
+
     if (this.options.autoInit) {
       this.init();
     }
@@ -84,8 +87,12 @@ var Parallux = function () {
         this.elements[i] = new ParalluxItem(children[i], this.viewPort);
       }
 
-      this.lazyView.on('enter', this.startRender.bind(this));
-      this.lazyView.on('exit', this.stopRender.bind(this));
+      this.lazyView.on('enter', this.startRender);
+      this.lazyView.on('exit', this.stopRender);
+
+      if (this.lazyView.state.inView) {
+        this.startRender();
+      }
     }
   }, {
     key: 'cachePosition',
@@ -281,11 +288,11 @@ var ParalluxItem = function () {
               transform += ' ' + tans + '(' + _this.getStyle(_this.attr[key][tans]) + ')';
             });
           } else {
-            _this.node.style[(0, _stylePrefixer.getPrefix)(key)] = _this.getStyle(_this.attr[key]);
+            _this.setStyle(key, _this.getStyle(_this.attr[key]));
           }
         });
       }
-      this.node.style[(0, _stylePrefixer.getPrefix)('transform')] = transform;
+      this.setStyle('transform', transform);
     }
   }, {
     key: 'setStyle',

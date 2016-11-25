@@ -25,6 +25,9 @@ export default class Parallux {
       rendering: false
     }
 
+    this.startRender = this.startRender.bind(this);
+    this.stopRender = this.stopRender.bind(this);
+
     if(this.options.autoInit) {
       this.init();
     }
@@ -61,8 +64,12 @@ export default class Parallux {
       this.elements[i] = new ParalluxItem(children[i], this.viewPort);
     }
 
-    this.lazyView.on('enter', this.startRender.bind(this));
-    this.lazyView.on('exit', this.stopRender.bind(this));
+    this.lazyView.on('enter', this.startRender);
+    this.lazyView.on('exit', this.stopRender);
+
+    if(this.lazyView.state.inView){
+      this.startRender();
+    }
   }
 
 
@@ -238,11 +245,11 @@ class ParalluxItem {
             transform += ' ' + tans + '(' + this.getStyle(this.attr[key][tans]) + ')';
           });
         } else {
-          this.node.style[getPrefix(key)] = this.getStyle(this.attr[key]);
+          this.setStyle(key, this.getStyle(this.attr[key]));
         }
       });
     }
-    this.node.style[getPrefix('transform')] = transform;
+    this.setStyle('transform', transform);
   }
 
   setStyle(prop, value) {

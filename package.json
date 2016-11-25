@@ -1,6 +1,6 @@
 {
   "name": "parallux",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Parallax made right. High Performant, smooth & jank Free",
   "main": "dist/parallux.js",
   "scripts": {
@@ -44,7 +44,7 @@
     "babel-plugin-transform-es2015-classes": "6.18.0",
     "babel-plugin-transform-proto-to-assign": "6.9.0",
     "babel-preset-es2015": "6.18.0",
-    "mocha": "3.1.2",
+    "mocha": "3.2.0",
     "npm-run-all": "3.1.1",
     "should": "11.1.1",
     "webpack": "1.13.3",

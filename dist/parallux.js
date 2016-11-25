@@ -24,7 +24,8 @@ var defaults = {
   lazyView: {},
   container: '.parallux-container',
   items: '.parallux-item',
-  relative: true,
+  autoInit: true,
+  relative: false,
   pov: 0.5
 };
 
@@ -39,19 +40,32 @@ var Parallux = function () {
 
     this.container = container;
     this.options = (0, _objectAssign2.default)({}, defaults, options);
-    this.options.pov = this.container.getAttribute('data-parallux-pov') || this.options.pov;
-    this.options.relative = !!this.container.getAttribute('data-parallux-relative');
-
     this.state = {
+      initialRender: true,
+      initialized: false,
       rendering: false
     };
 
-    this.init();
+    if (this.options.autoInit) {
+      this.init();
+    }
   }
 
   _createClass(Parallux, [{
     key: 'init',
     value: function init() {
+      if (this.state.initialized) {
+        console.warn('Parallux is already initialized');
+        return;
+      }
+
+      this.state.initialized = true;
+
+      var pov = this.container.getAttribute('data-parallux-pov');
+      if (pov !== null) {
+        this.options.pov = parseFloat(pov);
+      }
+      this.options.relative = this.container.getAttribute('data-parallux-relative') === 'true';
 
       this.onScroll = this.render.bind(this);
       this.onResize = this.render.bind(this);
@@ -59,13 +73,11 @@ var Parallux = function () {
       var children = typeof this.options.items === 'string' ? this.container.querySelectorAll(this.options.items) : this.options.items;
       this.numElements = children.length;
 
-      this.initialRender = true;
       this.lazyView = new _lazyview2.default(this.container, this.options.lazyView);
-      this.scroll = this.lazyView.scroll;
 
       this.viewPort = {
-        width: this.scroll.clientWidth,
-        height: this.scroll.clientHeight
+        width: this.lazyView.scroll.clientWidth,
+        height: this.lazyView.scroll.clientHeight
       };
 
       for (var i = 0; i < this.numElements; i++) {
@@ -78,12 +90,12 @@ var Parallux = function () {
   }, {
     key: 'cachePosition',
     value: function cachePosition() {
-      this.viewPort.width = this.scroll.clientWidth;
-      this.viewPort.height = this.scroll.clientHeight;
+      this.viewPort.width = this.lazyView.scroll.clientWidth;
+      this.viewPort.height = this.lazyView.scroll.clientHeight;
 
       for (var i = 0; i < this.numElements; i++) {
         var el = this.elements[i];
-        el.cachePosition(this.lazyView.position.bottom - this.scroll.y);
+        el.cachePosition(this.lazyView.position.bottom - this.lazyView.scroll.y);
       }
     }
   }, {
@@ -91,16 +103,17 @@ var Parallux = function () {
     value: function startRender() {
 
       if (!this.state.rendering) {
-        if (this.initialRender) {
-          this.initialRender = false;
+        this.state.rendering = true;
+
+        if (this.state.initialRender) {
+          this.state.initialRender = false;
           this.cachePosition();
         }
         this.preRender();
-        this.state.rendering = true;
-        this.scroll.on('scroll:start', this.onScroll);
-        this.scroll.on('scroll:progress', this.onScroll);
-        this.scroll.on('scroll:stop', this.onScroll);
-        this.scroll.on('scroll:resize', this.onResize);
+        this.lazyView.scroll.on('scroll:start', this.onScroll);
+        this.lazyView.scroll.on('scroll:progress', this.onScroll);
+        this.lazyView.scroll.on('scroll:stop', this.onScroll);
+        this.lazyView.scroll.on('scroll:resize', this.onResize);
         this.render();
       }
     }
@@ -109,10 +122,10 @@ var Parallux = function () {
     value: function stopRender() {
       if (this.state.rendering) {
         this.state.rendering = false;
-        this.scroll.off('scroll:start', this.onScroll);
-        this.scroll.off('scroll:progress', this.onScroll);
-        this.scroll.off('scroll:stop', this.onScroll);
-        this.scroll.off('scroll:resize', this.onResize);
+        this.lazyView.scroll.off('scroll:start', this.onScroll);
+        this.lazyView.scroll.off('scroll:progress', this.onScroll);
+        this.lazyView.scroll.off('scroll:stop', this.onScroll);
+        this.lazyView.scroll.off('scroll:resize', this.onResize);
         this.postRender();
       }
     }
@@ -133,11 +146,11 @@ var Parallux = function () {
   }, {
     key: 'render',
     value: function render() {
-      var hdiff = (this.scroll.clientHeight - this.lazyView.position.height) * this.options.pov;
-      var diff = this.lazyView.position.bottom - hdiff - this.scroll.y;
-      var percent = (this.scroll.clientHeight - diff) / this.scroll.clientHeight;
+      var hdiff = (this.lazyView.scroll.clientHeight - this.lazyView.position.height) * this.options.pov;
+      var diff = this.lazyView.position.bottom - hdiff - this.lazyView.scroll.y;
+      var percent = (this.lazyView.scroll.clientHeight - diff) / this.lazyView.scroll.clientHeight;
       for (var i = 0; i < this.numElements; i++) {
-        var top = !this.options.relative ? this.elements[i].position.top : 0;
+        var top = this.options.relative ? this.elements[i].position.top : 0;
         var y = this.elements[i].offset + diff + top;
         this.elements[i].setState(y, percent);
       };

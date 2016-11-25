@@ -6,7 +6,8 @@ const defaults = {
   lazyView: {},
   container: '.parallux-container',
   items: '.parallux-item',
-  relative: true,
+  autoInit: true,
+  relative: false,
   pov: 0.5
 };
 
@@ -18,17 +19,30 @@ export default class Parallux {
 
     this.container = container;
     this.options = assign({}, defaults, options);
-    this.options.pov = this.container.getAttribute('data-parallux-pov') || this.options.pov;
-    this.options.relative = !!(this.container.getAttribute('data-parallux-relative'));
-
     this.state = {
+      initialRender: true,
+      initialized: false,
       rendering: false
     }
 
-    this.init();
+    if(this.options.autoInit) {
+      this.init();
+    }
   }
 
   init() {
+    if(this.state.initialized){
+      console.warn('Parallux is already initialized');
+      return;
+    }
+
+    this.state.initialized = true;
+
+    var pov = this.container.getAttribute('data-parallux-pov');
+    if(pov !== null){
+      this.options.pov = parseFloat(pov);
+    }
+    this.options.relative = (this.container.getAttribute('data-parallux-relative') === 'true');
 
     this.onScroll = this.render.bind(this);
     this.onResize = this.render.bind(this);
@@ -36,13 +50,11 @@ export default class Parallux {
     var children = (typeof this.options.items === 'string') ? this.container.querySelectorAll(this.options.items) : this.options.items;
     this.numElements = children.length;
 
-    this.initialRender = true;
     this.lazyView = new LazyView(this.container, this.options.lazyView);
-    this.scroll = this.lazyView.scroll;
 
     this.viewPort = {
-      width: this.scroll.clientWidth,
-      height: this.scroll.clientHeight
+      width: this.lazyView.scroll.clientWidth,
+      height: this.lazyView.scroll.clientHeight
     }
 
     for (let i = 0; i < this.numElements; i++) {
@@ -55,28 +67,29 @@ export default class Parallux {
 
 
   cachePosition() {
-    this.viewPort.width = this.scroll.clientWidth;
-    this.viewPort.height = this.scroll.clientHeight;
+    this.viewPort.width = this.lazyView.scroll.clientWidth;
+    this.viewPort.height = this.lazyView.scroll.clientHeight;
 
     for (let i = 0; i < this.numElements; i++) {
       const el = this.elements[i];
-      el.cachePosition(this.lazyView.position.bottom - this.scroll.y);
+      el.cachePosition(this.lazyView.position.bottom - this.lazyView.scroll.y);
     }
   }
 
   startRender() {
 
     if (!this.state.rendering) {
-      if (this.initialRender) {
-        this.initialRender = false;
+      this.state.rendering = true;
+
+      if (this.state.initialRender) {
+        this.state.initialRender = false;
         this.cachePosition();
       }
       this.preRender();
-      this.state.rendering = true;
-      this.scroll.on('scroll:start', this.onScroll);
-      this.scroll.on('scroll:progress', this.onScroll);
-      this.scroll.on('scroll:stop', this.onScroll);
-      this.scroll.on('scroll:resize', this.onResize);
+      this.lazyView.scroll.on('scroll:start', this.onScroll);
+      this.lazyView.scroll.on('scroll:progress', this.onScroll);
+      this.lazyView.scroll.on('scroll:stop', this.onScroll);
+      this.lazyView.scroll.on('scroll:resize', this.onResize);
       this.render();
     }
   }
@@ -84,10 +97,10 @@ export default class Parallux {
   stopRender() {
     if (this.state.rendering) {
       this.state.rendering = false;
-      this.scroll.off('scroll:start', this.onScroll);
-      this.scroll.off('scroll:progress', this.onScroll);
-      this.scroll.off('scroll:stop', this.onScroll);
-      this.scroll.off('scroll:resize', this.onResize);
+      this.lazyView.scroll.off('scroll:start', this.onScroll);
+      this.lazyView.scroll.off('scroll:progress', this.onScroll);
+      this.lazyView.scroll.off('scroll:stop', this.onScroll);
+      this.lazyView.scroll.off('scroll:resize', this.onResize);
       this.postRender();
     }
   }
@@ -105,11 +118,11 @@ export default class Parallux {
   }
 
   render() {
-    const hdiff = (this.scroll.clientHeight - this.lazyView.position.height) * this.options.pov;
-    const diff = (this.lazyView.position.bottom - hdiff - this.scroll.y);
-    var percent = (this.scroll.clientHeight - diff) / this.scroll.clientHeight;
+    const hdiff = (this.lazyView.scroll.clientHeight - this.lazyView.position.height) * this.options.pov;
+    const diff = (this.lazyView.position.bottom - hdiff - this.lazyView.scroll.y);
+    var percent = (this.lazyView.scroll.clientHeight - diff) / this.lazyView.scroll.clientHeight;
     for (let i = 0; i < this.numElements; i++) {
-      const top = !this.options.relative ? this.elements[i].position.top :  0;
+      const top = this.options.relative ? this.elements[i].position.top :  0;
       const y = this.elements[i].offset + diff + top;
       this.elements[i].setState(y, percent);
     };

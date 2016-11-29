@@ -8,7 +8,8 @@ const defaults = {
   items: '.parallux-item',
   autoInit: true,
   relative: false,
-  pov: 0.5
+  offset: 0,
+  pov: 0
 };
 
 export default class Parallux {
@@ -46,6 +47,7 @@ export default class Parallux {
       this.options.pov = parseFloat(pov);
     }
     this.options.relative = (this.container.getAttribute('data-parallux-relative') === 'true');
+    this.options.offset = parseFloat(this.container.getAttribute('data-parallux-offset'), 10) || this.options.offset;
 
     this.onScroll = this.render.bind(this);
     this.onResize = this.render.bind(this);
@@ -126,7 +128,7 @@ export default class Parallux {
 
   render() {
     const hdiff = (this.lazyView.scroll.clientHeight - this.lazyView.position.height) * this.options.pov;
-    const diff = (this.lazyView.position.bottom - hdiff - this.lazyView.scroll.y);
+    const diff = (this.lazyView.position.bottom - hdiff - this.lazyView.scroll.y) + this.options.offset;
     var percent = (this.lazyView.scroll.clientHeight - diff) / this.lazyView.scroll.clientHeight;
     for (let i = 0; i < this.numElements; i++) {
       const top = this.options.relative ? this.elements[i].position.top :  0;

@@ -87,16 +87,16 @@ summary {
 }
 
 .header {
+  position: relative;
   height: 100%;
+  height: calc(100% - 40px);
+
   background-color: #222;
   opacity: 0.95;
   color: white;
   /*padding-top: 30%;*/
   padding: 4%;
-}
-
-.header {
-  padding-top: 6%;
+  padding-top: 4%;
   line-height: 2;
 }
 

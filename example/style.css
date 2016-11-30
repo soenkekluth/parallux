@@ -47,11 +47,12 @@ summary {
 
 .fixed,
 .background {
+
   position: fixed !important;
   top: 0;
   opacity: 0.4;
+  // z-index: -10;
   width: 100%;
-  z-index: -1;
   height: 100%;
 }
 
@@ -89,10 +90,12 @@ summary {
 .header {
   position: relative;
   height: 100%;
+  height: -webkit-calc(100% - 40px);
+  height: -moz-calc(100% - 40px);
   height: calc(100% - 40px);
 
   background-color: #222;
-  opacity: 0.95;
+  // opacity: 0.95;
   color: white;
   /*padding-top: 30%;*/
   padding: 4%;
@@ -109,6 +112,8 @@ summary {
   font-size: 17vw;
 }
 
+
+
 .parallux-container {
   position: relative;
   -webkit-perspective: 500px;
@@ -117,9 +122,9 @@ summary {
 }
 
 .parallux-item {
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  backface-visibility: hidden;
+  // -webkit-backface-visibility: hidden;
+  //    -moz-backface-visibility: hidden;
+  //         backface-visibility: hidden;
   -webkit-perspective: preserve-3d;
   -moz-perspective: preserve-3d;
   perspective: preserve-3d;
@@ -174,7 +179,7 @@ img {
 
 footer {
   padding-top: 3em;
-  height: 200%;
+  height: 100%;
 }
 
 section {

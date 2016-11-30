@@ -10,7 +10,10 @@ const getAttribute = (el, attribute, fallback = null)=> {
   return fallback;
 }
 
-const round = Math.round;
+const windowY =() => {
+  return (window.pageYOffset || window.scrollY || 0);
+}
+
 
 export default class Parallux {
 
@@ -67,6 +70,7 @@ export default class Parallux {
     this.lazyView = new LazyView(this.container, this.props.lazyView);
 
     this.viewPort = {
+      top: this.lazyView.position.bottom,
       width: this.lazyView.scroll.clientWidth,
       height: this.lazyView.scroll.clientHeight
     }
@@ -87,12 +91,10 @@ export default class Parallux {
   cachePosition() {
     this.viewPort.width = this.lazyView.scroll.clientWidth;
     this.viewPort.height = this.lazyView.scroll.clientHeight;
+    this.viewPort.top =  this.lazyView.position.bottom
 
     for (let i = 0; i < this.numElements; i++) {
       const el = this.elements[i];
-
-      // console.log('bottom', this.lazyView.position.bottom);
-      // el.cachePosition(this.lazyView.position.bottom - this.lazyView.scroll.y);
       el.cachePosition(-(this.lazyView.position.bottom - this.lazyView.scroll.y));
     }
   }
@@ -143,9 +145,7 @@ export default class Parallux {
     const diff = (this.lazyView.position.bottom - hdiff - this.lazyView.scroll.y) + this.props.offset;
     var percent = (this.lazyView.scroll.clientHeight - diff) / this.lazyView.scroll.clientHeight;
     for (let i = 0; i < this.numElements; i++) {
-      const top = this.props.relative ? this.elements[i].position.top :  0;
-      const y = this.elements[i].props.offset + diff + top;
-      this.elements[i].setState(y, percent);
+      this.elements[i].setState(percent);
     };
   }
 
@@ -170,6 +170,7 @@ class ParalluxItem {
   static defaultProps = {
     attr: null,
     ratio: 0,
+    ease: 1,
     round: false,
     ratioUp: 0,
     offset: 0,
@@ -190,8 +191,11 @@ class ParalluxItem {
     const attr = getAttribute(node, 'data-parallux-attr');
     this.props.attr = attr ? JSON.parse(attr) : this.props.attr;
 
+    this.props.ease = parseFloat(getAttribute(node, 'data-parallux-ease', this.props.ease), 10);
     this.props.ratio = parseFloat(getAttribute(node, 'data-parallux-ratio', this.props.ratio), 10);
     this.props.ratioUp = parseFloat(getAttribute(node, 'data-parallux-ratio-up', (this.props.ratioUp || this.props.ratio)), 10);
+    this.props.ratio *= 10;
+    this.props.ratioUp *= 10;
 
     this.props.offset = parseFloat(getAttribute(node, 'data-parallux-offset', this.props.offset), 10);
     this.props.round = JSON.parse(getAttribute(node, 'data-parallux-round', this.props.round));
@@ -238,41 +242,35 @@ class ParalluxItem {
     this.setStyle(getPrefix('willChange'), styles.join(','));
   }
 
-  setState(y, percent) {
-    // console.log(y)
+  setState(percent) {
+    this.state.percent += (((1-percent)*100 ) -this.state.percent) * this.props.ease;
+    this.render();
+  }
 
-    if (y < 0) {
-      y *= this.props.ratioUp /*- (this.offset * this.ratioUp)*/;
-    } else {
-      y *= this.props.ratio/* - (this.offset * this.ratio)*/
-    }
-
-    if(this.props.round){
-      // y = y | 0;
-      y = round(y);
-    }
-
-    if (this.state.y !== y) {
-      this.state.y = y;
-      this.state.percent = percent;
-      this.render();
-    }
+  getRatio() {
+    return ((this.state.percent >= 0) ? this.props.ratio : this.props.ratioUp);
   }
 
 
   getStyle(entry){
-    var unit = entry.unit || '';
-    var to = entry.to || 0;
-    const diff = entry.from - to;
-    var value = (entry.from - diff * this.state.percent);
-    if(entry.hasOwnProperty('to') && ((diff < 0 && value > to) || (diff > 0 && value < to))){
-     value = to
+    const to = entry.to || 0;
+    const diff = to - entry.from;
+    var value = 1 - (diff / 100) * this.state.percent;
+    if(entry.hasOwnProperty('to')){
+      if(diff > 0){
+        value = value > to ? to : value;
+        value = value < entry.from ? entry.from : value;
+      }else{
+        value = value < to ? to : value;
+        value = value > entry.from ? entry.from : value;
+      }
     }
-    return value + unit;
+    return value + (entry.unit ? entry.unit : '');
   }
 
   render() {
-    var transform = 'translateY(' + this.state.y + 'px)';
+    // var transform = 'translateY(' +(this.state.percent * this.getRatio()) + '%)';
+    var transform = 'translateY(' + (this.state.percent * this.getRatio()) + 'px)';
     if (this.props.attr) {
       Object.keys(this.props.attr).forEach(key => {
         if (key === 'transform') {

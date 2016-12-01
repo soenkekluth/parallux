@@ -30,6 +30,11 @@ body {
   height: 100%;
 }
 
+body::before {
+  content:'';
+  /*position: fixed;*/
+}
+
 article,
 aside,
 details,

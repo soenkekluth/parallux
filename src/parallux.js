@@ -2,16 +2,18 @@ import LazyView from 'lazyview';
 import assign from 'object-assign';
 import { getPrefix } from 'style-prefixer';
 
-
-const getAttribute = (el, attribute, fallback = null)=> {
-  if(el.hasAttribute(attribute)){
+const getAttribute = (el, attribute, fallback = null) => {
+  if (el.hasAttribute(attribute)) {
     return el.getAttribute(attribute);
   }
   return fallback;
 }
 
-const windowY =() => {
-  return (window.pageYOffset || window.scrollY || 0);
+const windowY = () => {
+  if(typeof window !== 'undefined'){
+    return (window.pageYOffset || window.scrollY || 0);
+  }
+  return 0;
 }
 
 
@@ -44,19 +46,19 @@ export default class Parallux {
     this.startRender = this.startRender.bind(this);
     this.stopRender = this.stopRender.bind(this);
 
-    if(this.props.autoInit) {
+    if (this.props.autoInit) {
       this.init();
     }
   }
 
   init() {
-    if(this.state.initialized){
+    if (this.state.initialized) {
       console.warn('Parallux is already initialized');
       return;
     }
 
     this.state.initialized = true;
-    this.props.pov = parseFloat(getAttribute(this.container, 'data-parallux-pov', this.props.pov),10);
+    this.props.pov = parseFloat(getAttribute(this.container, 'data-parallux-pov', this.props.pov), 10);
     this.props.relative = JSON.parse(getAttribute(this.container, 'data-parallux-relative', this.props.relative));
     this.props.round = JSON.parse(getAttribute(this.container, 'data-parallux-round', this.props.round));
     this.props.offset = parseFloat(getAttribute(this.container, 'data-parallux-offset', this.props.offset), 10);
@@ -76,13 +78,13 @@ export default class Parallux {
     }
 
     for (let i = 0; i < this.numElements; i++) {
-      this.elements[i] = new ParalluxItem(children[i], this.viewPort, {round: this.props.round});
+      this.elements[i] = new ParalluxItem(children[i], this.viewPort, { round: this.props.round });
     }
 
     this.lazyView.on('enter', this.startRender);
     this.lazyView.on('exit', this.stopRender);
 
-    if(this.lazyView.state.inView){
+    if (this.lazyView.state.inView) {
       this.startRender();
     }
   }
@@ -91,7 +93,7 @@ export default class Parallux {
   cachePosition() {
     this.viewPort.width = this.lazyView.scroll.clientWidth;
     this.viewPort.height = this.lazyView.scroll.clientHeight;
-    this.viewPort.top =  this.lazyView.position.bottom
+    this.viewPort.top = this.lazyView.position.bottom
 
     for (let i = 0; i < this.numElements; i++) {
       const el = this.elements[i];
@@ -200,7 +202,7 @@ class ParalluxItem {
     this.props.offset = parseFloat(getAttribute(node, 'data-parallux-offset', this.props.offset), 10);
     this.props.round = JSON.parse(getAttribute(node, 'data-parallux-round', this.props.round));
     this.props.max = getAttribute(node, 'data-parallux-max', this.props.max);
-    if(this.props.max !== null){
+    if (this.props.max !== null) {
       this.props.max = parseFloat(this.props.max, 10);
     }
 
@@ -209,6 +211,8 @@ class ParalluxItem {
     } else {
       this.processValue = this.processNullValue.bind(this);
     }
+
+    this.transform = 'translateY(0px)';
   }
 
 
@@ -226,8 +230,8 @@ class ParalluxItem {
   cachePosition(offset = 0) {
     var rect = this.node.getBoundingClientRect();
     this.position = {
-      top: parseInt(rect.top + offset, 10) ,
-      bottom: parseInt(rect.bottom  + offset, 10)
+      top: parseInt(rect.top + offset, 10),
+      bottom: parseInt(rect.bottom + offset, 10)
     }
   }
 
@@ -243,7 +247,11 @@ class ParalluxItem {
   }
 
   setState(percent) {
-    this.state.percent += (((1-percent)*100 ) -this.state.percent) * this.props.ease;
+    this.state.percent = (1 - percent) * 100;
+    // (((1-percent)*100 ) -this.state.percent) * this.props.ease;
+    this.state.y = (this.state.percent * this.getRatio()) + this.props.offset;
+    //this.props.offset
+    // this.state.y += ((this.state.percent * this.getRatio()) - this.state.y) * this.props.ease;
     this.render();
   }
 
@@ -252,15 +260,15 @@ class ParalluxItem {
   }
 
 
-  getStyle(entry){
+  getStyle(entry) {
     const to = entry.to || 0;
     const diff = to - entry.from;
     var value = 1 - (diff / 100) * this.state.percent;
-    if(entry.hasOwnProperty('to')){
-      if(diff > 0){
+    if (entry.hasOwnProperty('to')) {
+      if (diff > 0) {
         value = value > to ? to : value;
         value = value < entry.from ? entry.from : value;
-      }else{
+      } else {
         value = value < to ? to : value;
         value = value > entry.from ? entry.from : value;
       }
@@ -270,19 +278,19 @@ class ParalluxItem {
 
   render() {
     // var transform = 'translateY(' +(this.state.percent * this.getRatio()) + '%)';
-    var transform = 'translateY(' + (this.state.percent * this.getRatio()) + 'px)';
+    this.transform = 'translateY(' + (this.state.y) + 'px)';
     if (this.props.attr) {
       Object.keys(this.props.attr).forEach(key => {
         if (key === 'transform') {
           Object.keys(this.props.attr[key]).forEach(tans => {
-            transform += ' ' + tans + '(' + this.getStyle(this.props.attr[key][tans]) + ')';
+            this.transform += ' ' + tans + '(' + this.getStyle(this.props.attr[key][tans]) + ')';
           });
         } else {
           this.setStyle(key, this.getStyle(this.props.attr[key]));
         }
       });
     }
-    this.setStyle('transform', transform);
+    this.setStyle('transform', this.transform);
   }
 
   setStyle(prop, value) {

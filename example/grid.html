@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link href="style.css" rel="stylesheet">
   <title>Parallux Demo</title>
   <style>
 
@@ -96,7 +97,7 @@
 
 
   .parallux-item {
-    backface-visibility: hidden;
+
     perspective: preserve-3d;
 
   }
@@ -105,11 +106,13 @@
   .grid-item{
     display: block;
     float: left;
-    width: 33%;
+    width: 30%;
     border: 1px solid black;
     height: 300px;
     background-color: red;
     margin-bottom: 1em;
+    margin-right: 1.5%
+
   }
 
   .overflow-hidden {
@@ -183,47 +186,46 @@
 <body>
   <div class="page">
     <div style="height:500px"></div>
-
     <div class="section block">
       <div class="parallux-container">
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2" data-parallux-max=""></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.4" data-parallux-offset="40" data-parallux-max=""></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.5" data-parallux-offset="10" data-parallux-max=""></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.4" data-parallux-max=""></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.6" data-parallux-max=""></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.7" data-parallux-max=""></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.8" data-parallux-max=""></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.6" data-parallux-max=""></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.5" data-parallux-max=""></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.6"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="1"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.25"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.65"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="1.05"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.3"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.7"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="1.1"></div>
       </div>
     </div>
 
     <div class="section block">
       <div class="parallux-container">
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.4"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.8"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.2" data-parallux-ratio-up="0.2" data-parallux-attr='{"opacity":{"from":0,"to":1}, "transform":{"scale" : {"from":0.4,"to":1}}}'></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.2" data-parallux-ratio-up="0.2" data-parallux-attr='{"opacity":{"from":0,"to":1}, "transform":{"scale" : {"from":0.6,"to":1}}}'></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.2" data-parallux-ratio-up="0.2" data-parallux-attr='{"opacity":{"from":0,"to":1}, "transform":{"scale" : {"from":0.8,"to":1}}}'></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.4" data-parallux-ratio-up="0.2" data-parallux-attr='{"opacity":{"from":0,"to":1}, "transform":{"scale" : {"from":0.8,"to":1}, "rotate" : {"from":320,"to":0, "unit":"deg"}}}'></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.4" data-parallux-ratio-up="0.2" data-parallux-attr='{"opacity":{"from":0,"to":1}, "transform":{"scale" : {"from":0.4,"to":1}, "rotate" : {"from":100, "unit":"deg"}}}'></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.4" data-parallux-ratio-up="0.2" data-parallux-attr='{"opacity":{"from":0,"to":1}, "transform":{"scale" : {"from":0.6,"to":1}, "rotateY" : {"from":100, "unit":"deg"}}}'></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.6" data-parallux-ratio-up="0.2" data-parallux-attr='{"opacity":{"from":0,"to":1}, "transform":{"scale" : {"from":0.8,"to":1}, "rotateX" : {"from":200, "unit":"deg"}}}'></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.6" data-parallux-ratio-up="0.2" data-parallux-attr='{"opacity":{"from":0,"to":1}, "transform":{"scale" : {"from":0.8,"to":1}}}'></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.6" data-parallux-ratio-up="0.2" data-parallux-attr='{"opacity":{"from":0,"to":1}, "transform":{"scale" : {"from":0.8,"to":1}}}'></div>
       </div>
     </div>
 
 
     <div class="section block">
       <div class="parallux-container">
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
-      <div class="parallux-item grid-item"  data-parallux-ratio="-0.2"></div>
+      <div class="parallux-item grid-item"  data-parallux-ratio="0.2" data-parallux-ratio-up="0.2"></div>
+            <div class="parallux-item grid-item"  data-parallux-ratio="0.2" data-parallux-ratio-up="0.2"></div>
+            <div class="parallux-item grid-item"  data-parallux-ratio="0.4" data-parallux-ratio-up="0.2"></div>
+            <div class="parallux-item grid-item"  data-parallux-ratio="0.4" data-parallux-ratio-up="0.2"></div>
+            <div class="parallux-item grid-item"  data-parallux-ratio="0.4" data-parallux-ratio-up="0.2"></div>
+            <div class="parallux-item grid-item"  data-parallux-ratio="0.8" data-parallux-ratio-up="0.2"></div>
+            <div class="parallux-item grid-item"  data-parallux-ratio="1" data-parallux-ratio-up="0.2"></div>
+            <div class="parallux-item grid-item"  data-parallux-ratio="0.1" data-parallux-ratio-up="0.2"></div>
+            <div class="parallux-item grid-item"  data-parallux-ratio="0.3" data-parallux-ratio-up="0.2"></div>
       </div>
     </div>
 

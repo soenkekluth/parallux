@@ -1,6 +1,6 @@
 {
   "name": "parallux",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Parallax made right. High Performant, smooth & jank Free",
   "main": "dist/parallux.js",
   "scripts": {

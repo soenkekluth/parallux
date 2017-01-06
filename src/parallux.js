@@ -72,7 +72,7 @@ export default class Parallux {
     this.lazyView = new LazyView(this.container, this.props.lazyView);
 
     this.viewPort = {
-      top: this.lazyView.position.bottom,
+      top: this.lazyView.position.top,
       width: this.lazyView.scroll.clientWidth,
       height: this.lazyView.scroll.clientHeight
     }
@@ -93,11 +93,11 @@ export default class Parallux {
   cachePosition() {
     this.viewPort.width = this.lazyView.scroll.clientWidth;
     this.viewPort.height = this.lazyView.scroll.clientHeight;
-    this.viewPort.top = this.lazyView.position.bottom
+    this.viewPort.top = this.lazyView.position.top
 
     for (let i = 0; i < this.numElements; i++) {
       const el = this.elements[i];
-      el.cachePosition(-(this.lazyView.position.bottom - this.lazyView.scroll.y));
+      el.cachePosition(-(this.lazyView.position.top - this.lazyView.scroll.y));
     }
   }
 
@@ -143,9 +143,21 @@ export default class Parallux {
   }
 
   render() {
-    const hdiff = (this.lazyView.scroll.clientHeight - this.lazyView.position.height) * this.props.pov;
-    const diff = (this.lazyView.position.bottom - hdiff - this.lazyView.scroll.y) + this.props.offset;
-    var percent = (this.lazyView.scroll.clientHeight - diff) / this.lazyView.scroll.clientHeight;
+    // const hdiff = (this.lazyView.scroll.clientHeight - this.lazyView.position.height) * this.props.pov;
+    // const diff = (this.lazyView.position.top - hdiff - this.lazyView.scroll.y) + this.props.offset;
+    // var percent = (this.lazyView.scroll.clientHeight - diff) / this.lazyView.scroll.clientHeight;
+
+    // const innerProgress =( (this.lazyView.position.top - this.lazyView.scroll.clientHeight - this.lazyView.scroll.y)  / -this.lazyView.position.height);
+    // const progress = this.lazyView.state.progress;
+    // const topProgress = (progress * (this.lazyView.position.top + this.lazyView.position.height)) / this.lazyView.scroll.clientHeight;
+    const percent = this.lazyView.state.progress + (1 - this.props.pov);//( innerProgress  * this.props.pov)- innerProgress;
+    // const percent = topProgress + (1-this.props.pov);//( innerProgress  * this.props.pov)- innerProgress;
+    // const percent = innerProgress + this.props.pov ;//( innerProgress  * this.props.pov)- innerProgress;
+    // const bottomProgress = (progress * (this.lazyView.position.bottom - this.lazyView.position.height)) / this.lazyView.scroll.clientHeight;
+    // const perc = topProgress /* this.props.pov*/;
+    // console.log(topProgress, innerProgress, percent)
+    // console.log(progress, topProgress, bottomProgress)
+    // console.log(progress, topProgress ,this.props.pov , percent)
     for (let i = 0; i < this.numElements; i++) {
       this.elements[i].setState(percent);
     };

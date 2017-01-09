@@ -1,6 +1,6 @@
 {
   "name": "parallux",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "Parallax made right. High Performant, smooth & jank Free",
   "main": "lib/parallux.js",
   "scripts": {
@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.20.0",
-    "lazyview": "^0.8.1",
+    "lazyview": "^0.9.0",
     "object-assign": "^4.1.0",
     "style-prefixer": "^1.1.1"
   }

@@ -1814,9 +1814,9 @@ lazy-cache@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
 
-lazyview@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/lazyview/-/lazyview-0.8.1.tgz#230f4e5638b5548a9aec10fca597fa9de4b35587"
+lazyview@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/lazyview/-/lazyview-0.9.0.tgz#b276fdea05f24002647629b26ef320405009198a"
   dependencies:
     babel-runtime "^6.20.0"
     classnames "^2.2.5"

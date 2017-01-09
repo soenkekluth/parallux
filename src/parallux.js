@@ -182,7 +182,7 @@ export default class Parallux {
 class ParalluxItem {
 
   static defaultProps = {
-    attr: null,
+    style: null,
     ratio: 0,
     ease: 1,
     round: false,
@@ -202,8 +202,8 @@ class ParalluxItem {
       percent: 0
     }
 
-    const attr = getAttribute(node, 'data-parallux-attr');
-    this.props.attr = attr ? JSON.parse(attr) : this.props.attr;
+    const style = getAttribute(node, 'data-parallux-style');
+    this.props.style = style ? JSON.parse(style) : this.props.style;
 
     this.props.ease = parseFloat(getAttribute(node, 'data-parallux-ease', this.props.ease), 10);
     this.props.ratio = parseFloat(getAttribute(node, 'data-parallux-ratio', this.props.ratio), 10);
@@ -248,7 +248,7 @@ class ParalluxItem {
   }
 
   setWillChange() {
-    let styles = this.props.attr ? Object.keys(this.props.attr) : [];
+    let styles = this.props.style ? Object.keys(this.props.style) : [];
     if (styles.indexOf('transform') === -1) {
       styles.unshift('transform');
     }
@@ -291,14 +291,14 @@ class ParalluxItem {
   render() {
     // var transform = 'translateY(' +(this.state.percent * this.getRatio()) + '%)';
     this.transform = 'translateY(' + (this.state.y) + 'px)';
-    if (this.props.attr) {
-      Object.keys(this.props.attr).forEach(key => {
+    if (this.props.style) {
+      Object.keys(this.props.style).forEach(key => {
         if (key === 'transform') {
-          Object.keys(this.props.attr[key]).forEach(tans => {
-            this.transform += ' ' + tans + '(' + this.getStyle(this.props.attr[key][tans]) + ')';
+          Object.keys(this.props.style[key]).forEach(tans => {
+            this.transform += ' ' + tans + '(' + this.getStyle(this.props.style[key][tans]) + ')';
           });
         } else {
-          this.setStyle(key, this.getStyle(this.props.attr[key]));
+          this.setStyle(key, this.getStyle(this.props.style[key]));
         }
       });
     }

@@ -16,7 +16,6 @@ const windowY = () => {
   return 0;
 }
 
-
 export default class Parallux {
 
   static defaultProps = {

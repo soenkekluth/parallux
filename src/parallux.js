@@ -10,7 +10,7 @@ const getAttribute = (el, attribute, fallback = null) => {
 }
 
 const windowY = () => {
-  if(typeof window !== 'undefined'){
+  if (typeof window !== 'undefined') {
     return (window.pageYOffset || window.scrollY || 0);
   }
   return 0;
@@ -67,7 +67,7 @@ export default class Parallux {
 
     var children = (typeof this.props.items === 'string') ? this.container.querySelectorAll(this.props.items) : this.props.items;
     this.numElements = children.length;
-
+    this.props.lazyView.threshold = this.props.offset;
     this.lazyView = new LazyView(this.container, this.props.lazyView);
 
     this.viewPort = {
@@ -149,7 +149,7 @@ export default class Parallux {
     // const innerProgress =( (this.lazyView.position.top - this.lazyView.scroll.clientHeight - this.lazyView.scroll.y)  / -this.lazyView.position.height);
     // const progress = this.lazyView.state.progress;
     // const topProgress = (progress * (this.lazyView.position.top + this.lazyView.position.height)) / this.lazyView.scroll.clientHeight;
-    const percent = this.lazyView.state.progress + (1 - this.props.pov);//( innerProgress  * this.props.pov)- innerProgress;
+    const percent = this.lazyView.state.progress + (1 - this.props.pov); //( innerProgress  * this.props.pov)- innerProgress;
     // const percent = topProgress + (1-this.props.pov);//( innerProgress  * this.props.pov)- innerProgress;
     // const percent = innerProgress + this.props.pov ;//( innerProgress  * this.props.pov)- innerProgress;
     // const bottomProgress = (progress * (this.lazyView.position.bottom - this.lazyView.position.height)) / this.lazyView.scroll.clientHeight;
@@ -187,7 +187,8 @@ class ParalluxItem {
     round: false,
     ratioUp: 0,
     offset: 0,
-    max: null
+    max: null,
+    min: null,
   };
 
   constructor(node, viewPort, props = {}) {
@@ -213,11 +214,20 @@ class ParalluxItem {
     this.props.offset = parseFloat(getAttribute(node, 'data-parallux-offset', this.props.offset), 10);
     this.props.round = JSON.parse(getAttribute(node, 'data-parallux-round', this.props.round));
     this.props.max = getAttribute(node, 'data-parallux-max', this.props.max);
+    this.props.min = getAttribute(node, 'data-parallux-min', this.props.min);
     if (this.props.max !== null) {
       this.props.max = parseFloat(this.props.max, 10);
     }
+    if (this.props.min !== null) {
+      this.props.min = parseFloat(this.props.min, 10);
+    }
 
-    if (this.props.max !== null) {
+
+    if (this.props.max !== null && this.props.min !== null) {
+      this.processValue = this.processMinMaxValue.bind(this);
+    } else if (this.props.max !== null) {
+      this.processValue = this.processMaxValue.bind(this);
+    } else if (this.props.min !== null) {
       this.processValue = this.processMaxValue.bind(this);
     } else {
       this.processValue = this.processNullValue.bind(this);
@@ -231,9 +241,20 @@ class ParalluxItem {
     return value;
   }
 
+  // processMinMaxValue(value) {
+  //   if()
+  // }
+
   processMaxValue(value) {
     if (value < this.props.max) {
       return this.props.max;
+    }
+    return value;
+  }
+
+  processMinValue(value) {
+    if (value > this.props.min) {
+      return this.props.min;
     }
     return value;
   }

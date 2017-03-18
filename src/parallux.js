@@ -65,8 +65,8 @@ export default class Parallux {
     this.onScroll = this.render.bind(this);
     this.onResize = this.render.bind(this);
 
-    var children = (typeof this.props.items === 'string') ? this.container.querySelectorAll(this.props.items) : this.props.items;
-    this.numElements = children.length;
+    var children = (typeof this.props.items === 'string' && this.props.items.length) ? this.container.querySelectorAll(this.props.items) : this.props.items;
+    this.numElements = children ? children.length : 0;
     this.props.lazyView.threshold = this.props.offset;
     this.lazyView = new LazyView(this.container, this.props.lazyView);
 

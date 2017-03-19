@@ -959,10 +959,6 @@ chokidar@^1.0.0, chokidar@^1.6.1:
   optionalDependencies:
     fsevents "^1.0.0"
 
-classnames@>=2.2.5:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
-
 cliui@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/cliui/-/cliui-2.1.0.tgz#4b475760ff80264c762c3a1719032e91c7fea0d1"
@@ -1152,6 +1148,10 @@ detect-indent@^4.0.0:
 diff@1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-1.4.0.tgz#7f28d2eb9ee7b15a97efd89ce63dcfdaa3ccbabf"
+
+dom-helpers@3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.2.1.tgz#3203e07fed217bd1f424b019735582fc37b2825a"
 
 domain-browser@^1.1.1:
   version "1.1.7"
@@ -1843,13 +1843,20 @@ lazy-cache@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
 
-lazyview@>=1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/lazyview/-/lazyview-1.1.1.tgz#e690d9ef71dc9e67b0a99827c561873e151406ea"
+lazyload-promise@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/lazyload-promise/-/lazyload-promise-1.0.0.tgz#614287f58c81a3e9ab0011da653dc00bee51752f"
   dependencies:
     babel-runtime ">=6.20.0"
-    classnames ">=2.2.5"
+
+lazyview@1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/lazyview/-/lazyview-1.1.7.tgz#d0a13536211165a3754037eafd5d08b28114d0aa"
+  dependencies:
+    babel-runtime ">=6.20.0"
+    dom-helpers "3.2.1"
     eventdispatcher ">=2.6.0"
+    lazyload-promise "1.0.0"
     lodash.debounce ">=4.0.8"
     object-assign ">=4.1.1"
     scrollfeatures ">=1.5.2"

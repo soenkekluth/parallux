@@ -1,4 +1,6 @@
 # Parallux
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/soenkekluth/parallux.svg)](https://greenkeeper.io/)
 Parallux - high performant parallax engine
 
 
